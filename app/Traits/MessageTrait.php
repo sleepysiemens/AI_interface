@@ -4,12 +4,18 @@ namespace App\Traits;
 
 use App\Models\Chat;
 use App\Models\Message;
+use App\Services\GetResponse;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 trait MessageTrait
 {
+    public $getResponse;
+    public function __construct(GetResponse  $getResponse)
+    {
+        $this->getResponse=$getResponse;
+    }
     /**
      * Store the Message.
      *
@@ -30,56 +36,7 @@ trait MessageTrait
             $text = trim($request->input('message'));
         } else {
             try {
-                $httpClient = new Client();
-
-                $oldMessages = Message::where([['chat_id', '=', $request->input('chat_id')], ['user_id', '=', $request->user()->id]])->orderBy('id', 'desc')->limit(20)->get()->reverse()->toArray();
-
-                // If there's a chat history
-                if ($oldMessages) {
-                    // Check if the last message is from the user
-                    if (end($oldMessages)['user_id'] == $request->user()->id) {
-                        // Remove the last message
-                        array_pop($oldMessages);
-                    }
-                }
-
-                // If there's a behavior defined
-                if ($chat->behavior) {
-                    $messages[] = ['role' => 'system', 'content' => $chat->behavior];
-                }
-
-                // Prepare the chat history
-                foreach ($oldMessages as $oldMessage) {
-                    $messages[] = ['role' => $oldMessage['role'], 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $oldMessage['result']))];
-                }
-
-                // Append the user's input
-                $messages[] = ['role' => 'user', 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message')))];
-
-                $response = $httpClient->request('POST', 'https://api.openai.com/v1/chat/completions',
-                    [
-                        'proxy' => [
-                            'http' => getRequestProxy(),
-                            'https' => getRequestProxy()
-                        ],
-                        'timeout' => config('settings.request_timeout') * 60,
-                        'headers' => [
-                            'User-Agent' => config('settings.request_user_agent'),
-                            'Authorization' => 'Bearer ' . config('settings.openai_key'),
-                        ],
-                        'json' => [
-                            'model' => config('settings.openai_completions_model'),
-                            'messages' => $messages,
-                            'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
-                            'n' => 1,
-                            'frequency_penalty' => 0,
-                            'presence_penalty' => 0,
-                            'user' => 'user' . $request->user()->id
-                        ]
-                    ]
-                );
-
-                $result = json_decode($response->getBody()->getContents(), true);
+                $result = json_decode($this->getResponse->messageResponse($request, $chat)->getBody()->getContents(), true);
 
                 $text = $result['choices'][0]['message']['content'] ?? '';
             } catch (\Exception $e) {

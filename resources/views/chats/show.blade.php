@@ -144,7 +144,7 @@
             <div class="card-footer bg-base-0">
                 <div class="form-row">
                     <div class="col">
-                        <textarea name="message" id="i-message" class="form-control{{ $errors->has('result') ? ' is-invalid' : '' }}" data-auto-resize-textarea="true" rows="1">sss</textarea>
+                        <textarea name="message" id="i-message" class="form-control{{ $errors->has('result') ? ' is-invalid' : '' }}" data-auto-resize-textarea="true" rows="1"></textarea>
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>

@@ -12,6 +12,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use ProtoneMedia\LaravelVerifyNewEmail\MustVerifyNewEmail;
+use App\Notifications\VerifyEmail;
+
 
 /**
  * Class User
@@ -58,6 +60,11 @@ class User extends Authenticatable implements MustVerifyEmail, hasLocalePreferen
         'updated_at',
         'deleted_at'
     ];
+
+    protected $fillable=
+        [
+          'tg_id'
+        ];
 
     /**
      * @param Builder $query
@@ -342,5 +349,15 @@ class User extends Authenticatable implements MustVerifyEmail, hasLocalePreferen
     public function transcriptions()
     {
         return $this->hasMany('App\Models\Transcription')->where('user_id', $this->id);
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail); // my notification
     }
 }

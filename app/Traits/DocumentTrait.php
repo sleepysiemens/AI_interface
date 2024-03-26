@@ -3,12 +3,18 @@
 namespace App\Traits;
 
 use App\Models\Document;
+use App\Services\GetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 
 trait DocumentTrait
 {
+    public $getResponse;
+    public function __construct(GetResponse  $getResponse)
+    {
+        $this->getResponse=$getResponse;
+    }
     /**
      * Store the Document.
      *
@@ -118,36 +124,6 @@ trait DocumentTrait
      */
     private function fetchCompletions(Request $request, $prompt)
     {
-        $httpClient = new Client();
-
-        $response = $httpClient->request('POST', 'https://api.openai.com/v1/chat/completions',
-            [
-                'proxy' => [
-                    'http' => getRequestProxy(),
-                    'https' => getRequestProxy()
-                ],
-                'timeout' => config('settings.request_timeout') * 60,
-                'headers' => [
-                    'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
-                ],
-                'json' => [
-                    'model' => config('settings.openai_completions_model'),
-                    'messages' => [
-                        [
-                            'role' => 'user',
-                            'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $prompt))
-                        ]
-                    ],
-                    'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
-                    'n' => $request->has('variations') ? (float) $request->input('variations') : 1,
-                    'frequency_penalty' => 0,
-                    'presence_penalty' => 0,
-                    'user' => 'user' . $request->user()->id
-                ]
-            ]
-        );
-
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode($this->getResponse->documentResponse($request, $prompt)->getBody()->getContents(), true);
     }
 }

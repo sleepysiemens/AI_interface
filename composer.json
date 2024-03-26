@@ -12,6 +12,7 @@
         "ext-gd": "*",
         "ext-json": "*",
         "anhskohbo/no-captcha": "^3.2",
+        "defstudio/telegraph": "^1.41",
         "doctrine/dbal": "^2.10",
         "graham-campbell/markdown": "15.0",
         "guzzlehttp/guzzle": "^7.0.1",

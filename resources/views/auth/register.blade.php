@@ -81,6 +81,14 @@
                                         <button type="submit" class="btn btn-block btn-primary py-2">
                                             {{ __('Register') }}
                                         </button>
+                                        <div class="row my-3">
+                                            <hr class="col border border-2">
+                                            <p class="col-auto m-auto">{{__('or')}}</p>
+                                            <hr class="col border border-2">
+                                        </div>
+                                        <a href="https://t.me/ai_interface_test_bot" class="btn btn-block btn-primary py-2">
+                                            {{__('Register via Telegram')}}
+                                        </a>
                                     @endif
 
                                     @if ($errors->has('g-recaptcha-response'))

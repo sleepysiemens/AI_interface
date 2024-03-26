@@ -15,6 +15,7 @@
 Auth::routes(['verify' => true]);
 Route::post('login/tfa/validate', 'Auth\LoginController@validateTfaCode')->name('login.tfa.validate');
 Route::post('login/tfa/resend', 'Auth\LoginController@resendTfaCode')->name('login.tfa.resend');
+Route::get('tg-auth/{hash}', 'TGAuthController@index')->name('tg.auth');
 
 // Install routes
 Route::prefix('install')->group(function () {
