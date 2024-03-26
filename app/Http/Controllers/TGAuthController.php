@@ -12,8 +12,9 @@ class TGAuthController extends Controller
     {
         if (Cache::has($hash))
         {
-            dd(1);
             $user=Cache::get($hash);
+            dd($user);
+
             auth()->login($user);
             //Cache::forget($hash);
             return redirect()->route('dashboard');
