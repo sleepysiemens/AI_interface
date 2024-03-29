@@ -201,7 +201,7 @@
                             <div class="col-auto">
                                 <div class="form-row">
                                     <div class="col">
-                                        @include('images.partials.menu')
+                                        @include('images.midjorney.partials.menu')
                                     </div>
                                 </div>
                             </div>
