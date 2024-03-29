@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('images'), 'title' => __('Images')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.midjorney'), 'title' => __('Images')],
     ['title' => __('Image')],
 ]])
 

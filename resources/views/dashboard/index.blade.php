@@ -289,7 +289,7 @@
                                                                     </div>
 
                                                                     <div class="d-flex align-items-center text-truncate">
-                                                                        <a href="{{ route('images.show', $image->id) }}" class="text-truncate">{{ $image->name }}</a>
+                                                                        <a href="{{ route('images.dalle.show', $image->id) }}" class="text-truncate">{{ $image->name }}</a>
 
                                                                         @if($image->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
                                                                     </div>
@@ -320,7 +320,7 @@
 
                         @if(count($recentImages) > 0)
                             <div class="card-footer bg-base-2 border-0">
-                                <a href="{{ route('images') }}" class="text-muted font-weight-medium d-flex align-items-center justify-content-center">{{ __('View all') }} @include((__('lang_dir') == 'rtl' ? 'icons.chevron-left' : 'icons.chevron-right'), ['class' => 'width-3 height-3 fill-current '.(__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2')])</a>
+                                <a href="{{ route('images.dalle') }}" class="text-muted font-weight-medium d-flex align-items-center justify-content-center">{{ __('View all') }} @include((__('lang_dir') == 'rtl' ? 'icons.chevron-left' : 'icons.chevron-right'), ['class' => 'width-3 height-3 fill-current '.(__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2')])</a>
                             </div>
                         @endif
                     </div>
@@ -338,7 +338,7 @@
                                 @include('icons.image', ['class' => 'fill-current width-6 height-6'])
                             </div>
                             <div class="d-flex flex-column justify-content-center">
-                                <a href="{{ route('images.new') }}" class="text-dark font-weight-medium text-decoration-none stretched-link">{{ __('Image') }}</a>
+                                <a href="{{ route('images.dalle.new') }}" class="text-dark font-weight-medium text-decoration-none stretched-link">{{ __('Image') }}</a>
 
                                 <div class="text-muted">
                                     {{ __('Generate a new image.') }}

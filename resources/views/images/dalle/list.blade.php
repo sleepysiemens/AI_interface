@@ -7,10 +7,10 @@
 
 <div class="d-flex">
     <div class="flex-grow-1">
-        <h1 class="h2 mb-3 d-inline-block">{{ __('Images') }}</h1>
+        <h1 class="h2 mb-3 d-inline-block">{{__('DALL-E')}} {{ __('Images') }}</h1>
     </div>
     <div>
-        <a href="{{ route('images.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
+        <a href="{{ route('images.dalle.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col"><div class="font-weight-medium py-1">{{ __('Images') }}</div></div>
             <div class="col-auto">
-                <form method="GET" action="{{ route('images') }}">
+                <form method="GET" action="{{ route('images.dalle') }}">
                     <div class="input-group input-group-sm">
                         <input class="form-control" name="search" placeholder="{{ __('Search') }}" value="{{ app('request')->input('search') }}">
                         <div class="input-group-append">
@@ -28,7 +28,7 @@
                                 <div class="dropdown-header py-3">
                                     <div class="row">
                                         <div class="col"><div class="font-weight-medium m-0 text-body">{{ __('Filters') }}</div></div>
-                                        <div class="col-auto"><a href="{{ route('images') }}" class="text-secondary">{{ __('Reset') }}</a></div>
+                                        <div class="col-auto"><a href="{{ route('images.dalle') }}" class="text-secondary">{{ __('Reset') }}</a></div>
                                     </div>
                                 </div>
 
@@ -181,7 +181,7 @@
                                                 </div>
 
                                                 <div class="d-flex align-items-center text-truncate">
-                                                    <a href="{{ route('images.show', $image->id) }}" class="text-truncate">{{ $image->name }}</a>
+                                                    <a href="{{ route('images.dalle.show', $image->id) }}" class="text-truncate">{{ $image->name }}</a>
 
                                                     @if($image->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
                                                 </div>

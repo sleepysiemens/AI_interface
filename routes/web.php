@@ -237,14 +237,23 @@ Route::post('/documents/new', 'DocumentController@store')->middleware('verified'
 Route::post('/documents/{id}/edit', 'DocumentController@update')->middleware('verified');
 Route::post('/documents/{id}/destroy', 'DocumentController@destroy')->middleware('verified')->name('documents.destroy');
 
-// Image routes
-Route::get('/images', 'ImageController@index')->middleware('verified')->name('images');
-Route::get('/images/new', 'ImageController@create')->middleware('verified')->name('images.new');
-Route::get('/images/{id}/edit', 'ImageController@edit')->middleware('verified')->name('images.edit');
-Route::get('/images/{id}', 'ImageController@show')->middleware('verified')->name('images.show');
-Route::post('/images/new', 'ImageController@store')->middleware('verified');
-Route::post('/images/{id}/edit', 'ImageController@update')->middleware('verified');
-Route::post('/images/{id}/destroy', 'ImageController@destroy')->middleware('verified')->name('images.destroy');
+// Image routes DALL-E
+Route::get('/images/dall-e', 'DALLEController@index')->middleware('verified')->name('images.dalle');
+Route::get('/images/dall-e/new', 'DALLEController@create')->middleware('verified')->name('images.dalle.new');
+Route::get('/images/dall-e/{id}/edit', 'DALLEController@edit')->middleware('verified')->name('images.dalle.edit');
+Route::get('/images/dall-e/{id}', 'DALLEController@show')->middleware('verified')->name('images.dalle.show');
+Route::post('/images/dall-e/new', 'DALLEController@store')->middleware('verified');
+Route::post('/images/dall-e/{id}/edit', 'DALLEController@update')->middleware('verified');
+Route::post('/images/dall-e/{id}/destroy', 'DALLEController@destroy')->middleware('verified')->name('images.dalle.destroy');
+
+// Image routes DALL-E
+Route::get('/images/mj', 'MidjorneyController@index')->middleware('verified')->name('images.midjorney');
+Route::get('/images/mj/new', 'MidjorneyController@create')->middleware('verified')->name('images.midjorney.new');
+Route::get('/images/mj/{id}/edit', 'MidjorneyController@edit')->middleware('verified')->name('images.midjorney.edit');
+Route::get('/images/mj/{id}', 'MidjorneyController@show')->middleware('verified')->name('images.midjorney.show');
+Route::post('/images/mj/new', 'MidjorneyController@store')->middleware('verified');
+Route::post('/images/mj/{id}/edit', 'MidjorneyController@update')->middleware('verified');
+Route::post('/images/mj/{id}/destroy', 'MidjorneyController@destroy')->middleware('verified')->name('images.midjorney.destroy');
 
 // Chat routes
 Route::get('/chats', 'ChatController@index')->middleware('verified')->name('chats');

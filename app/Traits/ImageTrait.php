@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Image;
+use App\Services\GetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
@@ -122,30 +123,9 @@ trait ImageTrait
      * @return mixed
      * @throws GuzzleException
      */
-    private function fetchImages(Request $request)
+    private function fetchImages(Request $request, GetResponse $getResponse)
     {
-        $httpClient = new Client();
-
-        $response = $httpClient->request('POST', 'https://api.openai.com/v1/images/generations',
-            [
-                'proxy' => [
-                    'http' => getRequestProxy(),
-                    'https' => getRequestProxy()
-                ],
-                'timeout' => config('settings.request_timeout') * 60,
-                'headers' => [
-                    'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
-                ],
-                'json' => [
-                    'prompt' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('description'))) . ($request->input('style') ? '. ' . __('The image should have :style style.', ['style' => $request->input('style')]) : '') . ($request->input('medium') ? '. ' . __('The image should be on a :medium medium.', ['medium' => $request->input('medium')]) : '') . ($request->input('filter') ? '. ' . __('Apply :filter filter.', ['filter' => $request->input('filter')]) : ''),
-                    'n' => $request->has('variations') ? (float) $request->input('variations') : 1,
-                    'size' => $request->input('resolution'),
-                    'response_format' => 'url',
-                    'user' => 'user' . $request->user()->id
-                ]
-            ]
-        );
+        $response=$getResponse->ImageResponse($request);
 
         return json_decode($response->getBody()->getContents(), true);
     }

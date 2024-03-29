@@ -10,7 +10,7 @@ use App\Models\Template;
 use App\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
-class ImageController extends Controller
+class DALLEController extends Controller
 {
     use ImageTrait;
 
@@ -56,7 +56,7 @@ class ImageController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'style' => $style, 'medium' => $medium, 'filter' => $filter, 'resolution' => $resolution, 'favorite' => $favorite, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
 
-        return view('images.container', ['view' => 'list', 'images' => $images]);
+        return view('images.dalle.container', ['view' => 'list', 'images' => $images]);
     }
 
     /**
@@ -66,7 +66,7 @@ class ImageController extends Controller
      */
     public function create()
     {
-        return view('images.container', ['view' => 'new']);
+        return view('images.dalle.container', ['view' => 'new']);
     }
 
     /**
@@ -80,7 +80,7 @@ class ImageController extends Controller
     {
         $image = Image::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
-        return view('images.container', ['view' => 'edit', 'image' => $image]);
+        return view('images.dalle.container', ['view' => 'edit', 'image' => $image]);
     }
 
     /**
@@ -94,7 +94,7 @@ class ImageController extends Controller
             abort(403);
         }
 
-        return view('images.container', ['view' => 'show', 'image' => $image]);
+        return view('images.dalle.container', ['view' => 'show', 'image' => $image]);
     }
 
     /**
@@ -112,7 +112,7 @@ class ImageController extends Controller
             return back()->with('error', __('An unexpected error has occurred, please try again.') . $e->getMessage())->withInput();
         }
 
-        return view('images.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description'), 'style' => $request->input('style'), 'medium' => $request->input('medium'), 'filter' => $request->input('filter'), 'resolution' => $request->input('resolution'), 'variations' => $request->input('variations')]);
+        return view('images.dalle.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description'), 'style' => $request->input('style'), 'medium' => $request->input('medium'), 'filter' => $request->input('filter'), 'resolution' => $request->input('resolution'), 'variations' => $request->input('variations')]);
     }
 
     /**

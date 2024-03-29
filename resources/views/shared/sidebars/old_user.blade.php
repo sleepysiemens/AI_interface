@@ -13,22 +13,9 @@
                 'icon' => 'document',
                 'title' => __('Documents')
             ],
-           'images' => [
+            route('images') => [
                 'icon' => 'image',
-                'title' => __('Images'),
-                'menu'=>
-                [
-                    route('images.dalle') =>
-                    [
-                        'icon' => 'openai',
-                        'title' => __('DALL-E')
-                    ],
-                    route('images.midjorney') =>
-                    [
-                        'icon' => 'midjorney',
-                        'title' => __('Midjorney')
-                    ],
-                ],
+                'title' => __('Images')
             ],
             route('chats') => [
                 'icon' => 'chat',
