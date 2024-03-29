@@ -3,9 +3,9 @@
 @endif
 
 <div class="dropdown-menu {{ (__('lang_dir') == 'rtl' ? 'dropdown-menu' : 'dropdown-menu-right') }} border-0 shadow">
-    <a class="dropdown-item d-flex align-items-center" href="{{ request()->is('admin/*') ? route('admin.images.edit', $image->id) : route('images.edit', $image->id) }}">@include('icons.edit', ['class' => 'text-muted fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')]) {{ __('Edit') }}</a>
+    <a class="dropdown-item d-flex align-items-center" href="{{ request()->is('admin/*') ? route('admin.images.edit', $image->id) : route('images.dalle.edit', $image->id) }}">@include('icons.edit', ['class' => 'text-muted fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')]) {{ __('Edit') }}</a>
 
-    <a class="dropdown-item d-flex align-items-center" href="{{ route('images.show', $image->id) }}">@include('icons.eye', ['class' => 'text-muted fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')]) {{ __('View') }}</a>
+    <a class="dropdown-item d-flex align-items-center" href="{{ route('images.dalle.show', $image->id) }}">@include('icons.eye', ['class' => 'text-muted fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')]) {{ __('View') }}</a>
 
     <a class="dropdown-item d-flex align-items-center" href="{{ $image->url }}" rel="download">@include('icons.export', ['class' => 'text-muted fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')]) {{ __('Download') }}</a>
 
