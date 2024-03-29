@@ -69,8 +69,8 @@
 
                 <div class="tab-pane fade" id="pills-openai" role="tabpanel" aria-labelledby="pills-openai-tab">
                     <div class="form-group">
-                        <label for="i-openai-key">{{ __('API key') }}</label>
-                        <input type="password" name="openai_key" id="i-openai-key" class="form-control{{ $errors->has('openai_key') ? ' is-invalid' : '' }}" value="{{ old('openai_key') ?? config('settings.openai_key') }}">
+                        <label for="i-openai-key">{{ __('API key') }}(временно сделал видимым)</label>
+                        <input type="text" name="openai_key" id="i-openai-key" class="form-control{{ $errors->has('openai_key') ? ' is-invalid' : '' }}" value="{{ old('openai_key') ?? config('settings.openai_key') }}">
                         @if ($errors->has('openai_key'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('openai_key') }}</strong>
