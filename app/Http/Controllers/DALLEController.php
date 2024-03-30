@@ -7,12 +7,12 @@ use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Image;
 use App\Models\Template;
-use App\Traits\ImageTrait;
+use App\Traits\MidjorneyImageTrait;
 use Illuminate\Http\Request;
 
 class DALLEController extends Controller
 {
-    use ImageTrait;
+    use DalleImageTrait;
 
     /**
      * List the Images.

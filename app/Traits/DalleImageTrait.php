@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-trait ImageTrait
+trait DalleImageTrait
 {
     /**
      * Store the Image.
@@ -125,7 +125,7 @@ trait ImageTrait
      */
     private function fetchImages(Request $request, GetResponse $getResponse)
     {
-        $response=$getResponse->ImageResponse($request);
+        $response=$getResponse->DalleImageResponse($request);
 
         return json_decode($response->getBody()->getContents(), true);
     }

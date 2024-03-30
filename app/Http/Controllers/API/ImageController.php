@@ -7,12 +7,12 @@ use App\Http\Requests\API\StoreImageRequest;
 use App\Http\Requests\API\UpdateImageRequest;
 use App\Http\Resources\ImageResource;
 use App\Models\Image;
-use App\Traits\ImageTrait;
+use App\Traits\MidjorneyImageTrait;
 use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-    use ImageTrait;
+    use MidjorneyImageTrait;
 
     /**
      * Display a listing of the resource.

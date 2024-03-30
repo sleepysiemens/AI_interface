@@ -33,7 +33,7 @@ use App\Models\Template;
 use App\Models\Transcription;
 use App\Traits\ChatTrait;
 use App\Traits\DocumentTrait;
-use App\Traits\ImageTrait;
+use App\Traits\MidjorneyImageTrait;
 use App\Traits\TemplateTrait;
 use App\Traits\UserTrait;
 use App\Models\User;
@@ -46,7 +46,7 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    use UserTrait, TemplateTrait, DocumentTrait, ImageTrait, ChatTrait;
+    use UserTrait, TemplateTrait, DocumentTrait, MidjorneyImageTrait, ChatTrait;
 
     /**
      * Show the Dashboard.

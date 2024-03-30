@@ -140,7 +140,7 @@ class GetResponse
         return $response;
     }
 
-    public function ImageResponse($request)
+    public function DalleImageResponse($request)
     {
         $httpClient = new Client();
 
@@ -166,5 +166,10 @@ class GetResponse
         );
 
         return $response;
+    }
+
+    public function MidjorneyImageResponse($request)
+    {
+        return null;
     }
 }
