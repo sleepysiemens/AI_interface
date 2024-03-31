@@ -11,15 +11,40 @@
     <div class="card-header"><div class="font-weight-medium py-1">{{ __('Advanced') }}</div></div>
     <div class="card-body">
 
-        <ul class="nav nav-pills d-flex flex-fill flex-column flex-md-row mb-3" id="pills-tab" role="tablist">
-            <li class="nav-item flex-grow-1 text-center">
+        {{--<ul class="nav nav-pills d-flex flex-fill flex-column flex-md-row mb-3" id="pills-tab" role="tablist">--}}
+        <ul class="nav nav-pills row px-2 mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item flex-grow-1 text-center col-2">
                 <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab" aria-controls="pills-general" aria-selected="true">{{ __('General') }}</a>
             </li>
-            <li class="nav-item flex-grow-1 text-center">
+            <li class="nav-item flex-grow-1 text-center col-2">
                 <a class="nav-link" id="pills-crawler-tab" data-toggle="pill" href="#pills-crawler" role="tab" aria-controls="pills-crawler" aria-selected="false">{{ __('Crawler') }}</a>
             </li>
-            <li class="nav-item flex-grow-1 text-center">
+            <li class="nav-item flex-grow-1 text-center col-2">
                 <a class="nav-link" id="pills-openai-tab" data-toggle="pill" href="#pills-openai" role="tab" aria-controls="pills-openai" aria-selected="false">{{ __('OpenAI') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-midjorney-tab" data-toggle="pill" href="#pills-midjorney" role="tab" aria-controls="pills-midjorney" aria-selected="false">{{ __('Midjorney') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-claude3-tab" data-toggle="pill" href="#pills-claude3" role="tab" aria-controls="pills-claude3" aria-selected="false">{{ __('Claude 3') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-stab_diff-tab" data-toggle="pill" href="#pills-stab_diff" role="tab" aria-controls="pills-stab_diff" aria-selected="false">{{ __('Stab Diff') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-davinci-tab" data-toggle="pill" href="#pills-davinci" role="tab" aria-controls="pills-davinci" aria-selected="false">{{ __('Davinci') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-ideogram-tab" data-toggle="pill" href="#pills-ideogram" role="tab" aria-controls="pills-ideogram" aria-selected="false">{{ __('Ideogram') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-runway-tab" data-toggle="pill" href="#pills-runway" role="tab" aria-controls="pills-runway" aria-selected="false">{{ __('Runway') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-deepfake-tab" data-toggle="pill" href="#pills-deepfake" role="tab" aria-controls="pills-deepfake" aria-selected="false">{{ __('Deepfake') }}</a>
+            </li>
+            <li class="nav-item flex-grow-1 text-center col-2">
+                <a class="nav-link" id="pills-llm-tab" data-toggle="pill" href="#pills-llm" role="tab" aria-controls="pills-llm" aria-selected="false">{{ __('LLM') }}</a>
             </li>
         </ul>
 
@@ -30,92 +55,17 @@
             @csrf
 
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">
-                    <div class="form-group">
-                        <label for="i-bad-words">{{ __('Bad words') }}</label>
-                        <textarea name="bad_words" id="i-bad-words" class="form-control{{ $errors->has('bad_words') ? ' is-invalid' : '' }}" rows="3">{{ config('settings.bad_words') }}</textarea>
-                        @if ($errors->has('bad_words'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('bad_words') }}</strong>
-                            </span>
-                        @endif
-                        <small class="form-text text-muted">{{ __('One per line.') }}</small>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="pills-crawler" role="tabpanel" aria-labelledby="pills-crawler-tab">
-                    <div class="form-group">
-                        <label for="i-request-user-agent">{{ __('User-Agent') }}</label>
-                        <input type="text" name="request_user_agent" id="i-request-user-agent" class="form-control{{ $errors->has('request_user_agent') ? ' is-invalid' : '' }}" value="{{ old('request_user_agent') ?? config('settings.request_user_agent') }}">
-                        @if ($errors->has('request_user_agent'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('request_user_agent') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="i-request-proxy">{{ __('Proxies') }}</label>
-                        <textarea name="request_proxy" id="i-request-proxy" class="form-control{{ $errors->has('request_proxy') ? ' is-invalid' : '' }}" rows="3" placeholder="http://username:password@ip:port
-">{{ config('settings.request_proxy') }}</textarea>
-                        @if ($errors->has('request_proxy'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('request_proxy') }}</strong>
-                            </span>
-                        @endif
-                        <small class="form-text text-muted">{{ __('One per line.') }}</small>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="pills-openai" role="tabpanel" aria-labelledby="pills-openai-tab">
-                    <div class="form-group">
-                        <label for="i-openai-key">{{ __('API key') }}(временно сделал видимым)</label>
-                        <input type="text" name="openai_key" id="i-openai-key" class="form-control{{ $errors->has('openai_key') ? ' is-invalid' : '' }}" value="{{ old('openai_key') ?? config('settings.openai_key') }}">
-                        @if ($errors->has('openai_key'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('openai_key') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="i-openai-completions-model" class="d-inline-flex align-items-center"><span class="{{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}">{{ __('Model') }}</span><span class="badge badge-secondary">{{ __('Default') }}</span></label>
-                        <select name="openai_completions_model" id="i-openai-completions-model" class="custom-select{{ $errors->has('openai_completions_model') ? ' is-invalid' : '' }}">
-                            @foreach(['gpt-4', 'gpt-3.5-turbo', 'gpt-3.5-turbo-16k'] as $key)
-                                <option value="{{ $key }}" @if ((old('openai_completions_model') !== null && old('openai_completions_model') == $key) || (old('openai_completions_model') == null && $key == config('settings.openai_completions_model'))) selected @endif>{{ $key }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="i-default-language" class="d-inline-flex align-items-center"><span class="{{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}">{{ __('Language') }}</span><span class="badge badge-secondary">{{ __('Default') }}</span></label>
-                        <select name="openai_default_language" id="i-default-language" class="custom-select{{ $errors->has('openai_default_language') ? ' is-invalid' : '' }}">
-                            @foreach(array_intersect_key(config('languages'), array_flip(config('completions.languages'))) as $key => $value)
-                                <option value="{{ $key }}" @if ((old('openai_default_language') !== null && old('openai_default_language') == $key) || (old('openai_default_language') == null && $key == config('settings.openai_default_language'))) selected @endif>{{ __($value['name']) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="i-ai-assistant-name">{{ __('Assistant name') }}</label>
-                        <input type="text" name="ai_assistant_name" id="i-ai-assistant-name" class="form-control{{ $errors->has('ai_assistant_name') ? ' is-invalid' : '' }}" value="{{ old('ai_assistant_name') ?? config('settings.ai_assistant_name') }}">
-                        @if ($errors->has('ai_assistant_name'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('ai_assistant_name') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="i-ai-assistant-email">{{ __('Assistant email') }}</label>
-                        <input type="text" name="ai_assistant_email" id="i-ai-assistant-email" class="form-control{{ $errors->has('ai_assistant_email') ? ' is-invalid' : '' }}" value="{{ old('ai_assistant_email') ?? config('settings.ai_assistant_email') }}">
-                        @if ($errors->has('ai_assistant_email'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('ai_assistant_email') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
+                @include('admin.settings.advanced-blocks.general')
+                @include('admin.settings.advanced-blocks.crawler')
+                @include('admin.settings.advanced-blocks.openai')
+                @include('admin.settings.advanced-blocks.midjorney')
+                @include('admin.settings.advanced-blocks.claude3')
+                @include('admin.settings.advanced-blocks.stab_diff')
+                @include('admin.settings.advanced-blocks.davinci')
+                @include('admin.settings.advanced-blocks.ideogram')
+                @include('admin.settings.advanced-blocks.runway')
+                @include('admin.settings.advanced-blocks.deepfake')
+                @include('admin.settings.advanced-blocks.llm')
             </div>
 
             <button type="submit" name="submit" class="btn btn-primary">{{ __('Save') }}</button>

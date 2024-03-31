@@ -144,7 +144,7 @@ class GetResponse
     {
         $httpClient = new Client();
 
-        $response = $httpClient->request('POST', 'https://api.openai.com/v1/images/generations',
+        $response = $httpClient->request('POST', 'https://www.mymidjourney.ai/create/v2',
             [
                 'proxy' => [
                     'http' => getRequestProxy(),
