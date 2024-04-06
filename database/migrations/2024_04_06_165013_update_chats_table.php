@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table)
+        Schema::table('chats', function ($table)
         {
-            $table->string('tg_id')->nullable();
+            $table->string('model')->default('gpt-3.5-turbo');
         });
     }
 
@@ -26,8 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

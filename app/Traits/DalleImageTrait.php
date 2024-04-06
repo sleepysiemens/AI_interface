@@ -36,6 +36,12 @@ trait DalleImageTrait
         return $results;
     }
 
+    public $getResponse;
+    public function __construct(GetResponse $getResponse)
+    {
+        $this->getResponse=$getResponse;
+    }
+
     /**
      * Store the Image.
      *
@@ -123,9 +129,9 @@ trait DalleImageTrait
      * @return mixed
      * @throws GuzzleException
      */
-    private function fetchImages(Request $request, GetResponse $getResponse)
+    private function fetchImages(Request $request)
     {
-        $response=$getResponse->DalleImageResponse($request);
+        $response = $this->getResponse->DalleImageResponse($request);
 
         return json_decode($response->getBody()->getContents(), true);
     }

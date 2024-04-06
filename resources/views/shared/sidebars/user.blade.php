@@ -28,6 +28,11 @@
                         'icon' => 'midjorney',
                         'title' => __('Midjorney')
                     ],
+                    route('images.davinci') =>
+                    [
+                        'icon' => 'davinci',
+                        'title' => __('Davinci')
+                    ],
                 ],
             ],
             route('chats') => [

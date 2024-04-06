@@ -50,8 +50,12 @@ trait ChatTrait
             $chat->favorite = $request->input('favorite');
         }
 
-        $chat->save();
+        if ($request->has('model')) {
+            $chat->model = $request->input('model');
+        }
 
+        $chat->save();
+        
         return $chat;
     }
 }

@@ -11,8 +11,7 @@
 
     <div class="form-group">
         <label for="i-request-proxy">{{ __('Proxies') }}</label>
-        <textarea name="request_proxy" id="i-request-proxy" class="form-control{{ $errors->has('request_proxy') ? ' is-invalid' : '' }}" rows="3" placeholder="http://username:password@ip:port
-">{{ config('settings.request_proxy') }}</textarea>
+        <textarea name="request_proxy" id="i-request-proxy" class="form-control{{ $errors->has('request_proxy') ? ' is-invalid' : '' }}" rows="3" placeholder="http://username:password@ip:port">{{ config('settings.request_proxy') }}</textarea>
         @if ($errors->has('request_proxy'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('request_proxy') }}</strong>

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Image;
 use App\Models\Template;
+use App\Traits\DalleImageTrait;
 use App\Traits\MidjorneyImageTrait;
 use Illuminate\Http\Request;
 

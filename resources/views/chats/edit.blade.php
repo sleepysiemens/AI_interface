@@ -46,6 +46,15 @@
             </div>
 
             <div class="form-group">
+                <label for="i-openai-model" class="d-inline-flex align-items-center"><span class="{{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}">{{ __('Model') }}</span></label>
+                <select name="model" id="i-openai-model" class="custom-select{{ $errors->has('openai_model') ? ' is-invalid' : '' }}">
+                    @foreach(['gpt-3.5-turbo', 'gpt-3.5-turbo-16k', 'gpt-4'] as $key)
+                        <option value="{{ $key }}" @if($key==old('name') or $key==$chat->model) selected @endif>{{ $key }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="i-behavior">{{ __('Behavior') }}</label>
                 <input type="text" name="behavior" class="form-control{{ $errors->has('behavior') ? ' is-invalid' : '' }}" id="i-behavior" value="{{ old('behavior') ?? $chat->behavior }}">
                 @if ($errors->has('behavior'))

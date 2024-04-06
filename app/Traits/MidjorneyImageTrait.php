@@ -123,9 +123,9 @@ trait MidjorneyImageTrait
      * @return mixed
      * @throws GuzzleException
      */
-    private function fetchImages(Request $request, GetResponse $getResponse)
+    private function fetchImages(Request $request)
     {
-        $response=$getResponse->MidjorneyImageResponse($request);
+        $response=$this->getResponse->MidjorneyImageResponse($request);
 
         return json_decode($response->getBody()->getContents(), true);
     }

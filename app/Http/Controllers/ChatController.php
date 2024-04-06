@@ -101,6 +101,7 @@ class ChatController extends Controller
             abort(404);
         }
 
+        //dd(config('settings.openai_completions_model'));
         return view('chats.container', ['view' => 'show', 'chat' => $chat, 'messages' => $messages]);
     }
 

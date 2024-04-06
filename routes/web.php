@@ -255,6 +255,16 @@ Route::post('/images/mj/new', 'MidjorneyController@store')->middleware('verified
 Route::post('/images/mj/{id}/edit', 'MidjorneyController@update')->middleware('verified');
 Route::post('/images/mj/{id}/destroy', 'MidjorneyController@destroy')->middleware('verified')->name('images.midjorney.destroy');
 
+// Image routes Davinci
+Route::get('/images/davinci', 'MidjorneyController@index')->middleware('verified')->name('images.davinci');
+Route::get('/images/davinci/new', 'MidjorneyController@create')->middleware('verified')->name('images.davinci.new');
+Route::get('/images/davinci/{id}/edit', 'MidjorneyController@edit')->middleware('verified')->name('images.davinci.edit');
+Route::get('/images/davinci/{id}', 'MidjorneyController@show')->middleware('verified')->name('images.davinci.show');
+Route::post('/images/davinci/new', 'MidjorneyController@store')->middleware('verified');
+Route::post('/images/davinci/{id}/edit', 'MidjorneyController@update')->middleware('verified');
+Route::post('/images/davinci/{id}/destroy', 'MidjorneyController@destroy')->middleware('verified')->name('images.davinci.destroy');
+
+
 // Chat routes
 Route::get('/chats', 'ChatController@index')->middleware('verified')->name('chats');
 Route::get('/chats/new', 'ChatController@create')->middleware('verified')->name('chats.new');

@@ -83,7 +83,9 @@ class GetResponse
                     'Authorization' => 'Bearer ' . config('settings.openai_key'),
                 ],
                 'json' => [
-                    'model' => config('settings.openai_completions_model'),
+                    #TODO посмотреть в документации правильные наименования моделей
+                    #'model' => config('settings.openai_completions_model'),
+                    'model' => config($chat->model),
                     'messages' => $messages,
                     'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
                     'n' => 1,
@@ -144,7 +146,7 @@ class GetResponse
     {
         $httpClient = new Client();
 
-        $response = $httpClient->request('POST', 'https://www.mymidjourney.ai/create/v2',
+        $response = $httpClient->request('POST', 'https://api.openai.com/v1/images/generations',
             [
                 'proxy' => [
                     'http' => getRequestProxy(),
@@ -170,6 +172,28 @@ class GetResponse
 
     public function MidjorneyImageResponse($request)
     {
-        return null;
-    }
+        $httpClient = new Client();
+
+        $response = $httpClient->request('POST', 'https://www.mymidjourney.ai/create/v2',
+            [
+                'proxy' => [
+                    'http' => getRequestProxy(),
+                    'https' => getRequestProxy()
+                ],
+                'timeout' => config('settings.request_timeout') * 60,
+                'headers' => [
+                    'User-Agent' => config('settings.request_user_agent'),
+                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
+                ],
+                'json' => [
+                    'prompt' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('description'))) . ($request->input('style') ? '. ' . __('The image should have :style style.', ['style' => $request->input('style')]) : '') . ($request->input('medium') ? '. ' . __('The image should be on a :medium medium.', ['medium' => $request->input('medium')]) : '') . ($request->input('filter') ? '. ' . __('Apply :filter filter.', ['filter' => $request->input('filter')]) : ''),
+                    'n' => $request->has('variations') ? (float) $request->input('variations') : 1,
+                    'size' => $request->input('resolution'),
+                    'response_format' => 'url',
+                    'user' => 'user' . $request->user()->id
+                ]
+            ]
+        );
+
+        return $response;    }
 }

@@ -106,8 +106,10 @@ class AdminController extends Controller
     public function updateSetting(UpdateSettingRequest $request, $id)
     {
         foreach ($request->except(['_token', 'submit']) as $key => $value) {
+            //dump($value);
             // If the request is for a file upload
-            if($request->hasFile($key)) {
+            if($request->hasFile($key))
+            {
                 $value = $request->file($key)->hashName();
 
                 // Check if the file exists
@@ -118,7 +120,8 @@ class AdminController extends Controller
                 $request->file($key)->move(public_path('uploads/brand'), $value);
             }
 
-            if ($id == 'cronjob') {
+            if ($id == 'cronjob')
+            {
                 $value = Str::random(32);
             } elseif ($id == 'license') {
                 Setting::where('name', '=', 'license_key')->update(['value' => $request->input('license_key')]);
@@ -129,6 +132,8 @@ class AdminController extends Controller
 
             Setting::where('name', $key)->update(['value' => $value]);
         }
+
+        //dd(Setting::query()->first());
 
         return back()->with('success', __('Settings saved.'));
     }
