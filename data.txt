@@ -1,0 +1,14 @@
+proxies:
+http://Yq2LE0:M8bDUk@46.3.138.46:8000
+
+gpt-3.5-turbo и GPT-4 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
+
+ DALEE - 3 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
+
+ davinci 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
+
+ whisper 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
+
+ cloude 3 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
+
+ DeepFace e5ef8a7cfemsh70b172c584d8ea2p18b3b5jsn393cad8c034a
