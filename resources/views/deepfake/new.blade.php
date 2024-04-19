@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['url' => route('transcriptions'), 'title' => __('Transcriptions')],
+    ['url' => route('deepfake'), 'title' => __('DeepFake')],
     ['title' => __('New')],
 ]])
 
@@ -12,14 +12,14 @@
     <div class="card-header">
         <div class="row">
             <div class="col">
-                <div class="font-weight-medium py-1">{{ __('Transcription') }}</div>
+                <div class="font-weight-medium py-1">{{ __('DeepFake') }}</div>
             </div>
         </div>
     </div>
     <div class="card-body">
         @include('shared.message')
 
-        <form action="{{ route('transcriptions.new') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('deepfake.new') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             <input name="type" type="hidden" value="transcription">
@@ -36,9 +36,9 @@
             </div>
 
             <div class="form-group">
-                <label for="i-file">{{ __('File') }}</label>
+                <label for="i-file">{{ __('Source') }}</label>
                 <div class="custom-file">
-                    <input type="file" name="file" id="i-file" class="custom-file-input{{ $errors->has('file') ? ' is-invalid' : '' }}" accept="{{ implode(',', config('transcriptions.formats')) }}">
+                    <input type="file" name="source" id="i-file" class="custom-file-input{{ $errors->has('file') ? ' is-invalid' : '' }}">
                     <label class="custom-file-label" for="i-file" data-browse="{{ __('Browse') }}">{{ __('Choose file') }}</label>
                 </div>
                 @if ($errors->has('file'))
@@ -46,7 +46,21 @@
                         <strong>{{ $errors->first('file') }}</strong>
                     </span>
                 @endif
-                <small class="form-text text-muted">{{ __('The audio file.') }}</small>
+                <small class="form-text text-muted">{{ __('Image.') }}</small>
+            </div>
+
+            <div class="form-group">
+                <label for="i-file">{{ __('Target') }}</label>
+                <div class="custom-file">
+                    <input type="file" name="target" id="i-file-2" class="custom-file-input{{ $errors->has('file') ? ' is-invalid' : '' }}">
+                    <label class="custom-file-label" for="i-file-2" data-browse="{{ __('Browse') }}">{{ __('Choose file') }}</label>
+                </div>
+                @if ($errors->has('file'))
+                    <span class="invalid-feedback d-block" role="alert">
+                        <strong>{{ $errors->first('file') }}</strong>
+                    </span>
+                @endif
+                <small class="form-text text-muted">{{ __('Image.') }}</small>
             </div>
 
             <div class="form-group">
@@ -60,20 +74,6 @@
                 <small class="form-text text-muted">{{ __('The description of the audio file.') }}</small>
             </div>
 
-            <div class="form-group">
-                <label for="i-language">{{ __('Language') }}</label>
-                <select name="language" id="i-language" class="custom-select{{ $errors->has('language') ? ' is-invalid' : '' }}">
-                    @foreach(config('languages') as $key => $value)
-                        <option value="{{ $key }}" @if((old('language') !== null && old('language') == $key) || (old('language') == null && $key == Auth::user()->default_language)) selected @endif>{{ __($value['name']) }}</option>
-                    @endforeach
-                </select>
-                @if ($errors->has('language'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('language') }}</strong>
-                    </span>
-                @endif
-                <small class="form-text text-muted">{{ __('The language of the audio file.') }}</small>
-            </div>
 
             <button type="submit" name="submit" class="btn btn-primary">{{ __('Save') }}</button>
         </form>

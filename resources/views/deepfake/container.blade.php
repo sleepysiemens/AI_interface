@@ -5,7 +5,7 @@
         <div class="container py-3 my-3">
             <div class="row">
                 <div class="col-12">
-                    @include('transcriptions.' . $view)
+                    @include('deepfake.' . $view)
                 </div>
             </div>
         </div>

@@ -2,15 +2,15 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['title' => __('Transcriptions')]
+    ['title' => __('DeepFake')]
 ]])
 
 <div class="d-flex">
     <div class="flex-grow-1">
-        <h1 class="h2 mb-3 d-inline-block">{{ __('Transcriptions') }}</h1>
+        <h1 class="h2 mb-3 d-inline-block">{{ __('DeepFake') }}</h1>
     </div>
     <div>
-        <a href="{{ route('transcriptions.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
+        <a href="{{ route('deepfake.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
     </div>
 </div>
 
@@ -18,12 +18,12 @@
     <div class="card-header align-items-center">
         <div class="row">
             <div class="col">
-                <div class="font-weight-medium py-1">{{ __('Transcriptions') }}</div>
+                <div class="font-weight-medium py-1">{{ __('DeepFake') }}</div>
             </div>
             <div class="col-auto">
                 <div class="form-row">
                     <div class="col">
-                        <form method="GET" action="{{ route('transcriptions') }}">
+                        <form method="GET" action="{{ route('deepfake') }}">
                             <div class="input-group input-group-sm">
                                 <input class="form-control" name="search" placeholder="{{ __('Search') }}" value="{{ app('request')->input('search') }}">
                                 <div class="input-group-append">
@@ -37,7 +37,7 @@
                                                     <div class="font-weight-medium m-0 text-body">{{ __('Filters') }}</div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <a href="{{ route('transcriptions') }}" class="text-secondary">{{ __('Reset') }}</a>
+                                                    <a href="{{ route('deepfake') }}" class="text-secondary">{{ __('Reset') }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
     <div class="card-body">
         @include('shared.message')
 
-        @if(count($transcriptions) == 0)
+        @if(count($images) == 0)
             {{ __('No results found.') }}
         @else
             <div class="list-group list-group-flush my-n3">
@@ -143,7 +143,7 @@
                     </div>
                 </div>
 
-                @foreach($transcriptions as $transcription)
+                @foreach($images as $image)
                     <div class="list-group-item px-0">
                         <div class="row align-items-center">
                             <div class="col text-truncate">
@@ -152,32 +152,32 @@
                                         <div class="text-truncate">
                                             <div class="d-flex align-items-center">
                                                 <div class="d-flex align-items-center text-truncate">
-                                                    <a href="{{ route('transcriptions.show', $transcription->id) }}" class="text-truncate">{{ $transcription->name }}</a>
+                                                    <a href="{{ route('deepfake.show', $image->id) }}" class="text-truncate">{{ $image->name }}</a>
 
-                                                    @if($transcription->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
+                                                    @if($image->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <div class="text-muted text-truncate small cursor-help" data-tooltip="true" title="{{ $transcription->url }}">
-                                                    {{ Str::substr(strip_tags($transcription->result ?? __('No data')) . '.', 0, 160) }}
+                                                <div class="text-muted text-truncate small cursor-help" data-tooltip="true" title="{{ $image->url }}">
+                                                    {{ Str::substr(strip_tags($image->result ?? __('No data')) . '.', 0, 160) }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="d-none d-lg-block col-lg-2 text-truncate">
-                                        {{ number_format($transcription->words, 0, __('.'), __(',')) }}
+                                        {{ number_format($image->words, 0, __('.'), __(',')) }}
                                     </div>
 
                                     <div class="d-none d-lg-flex col-lg-2 text-truncate">
-                                        <span class="text-truncate" data-tooltip="true" title="{{ $transcription->created_at->tz(Auth::user()->timezone ?? config('app.timezone'))->format(__('Y-m-d') . ' H:i:s') }}">{{ $transcription->created_at->diffForHumans() }}</span>
+                                        <span class="text-truncate" data-tooltip="true" title="{{ $image->created_at->tz(Auth::user()->timezone ?? config('app.timezone'))->format(__('Y-m-d') . ' H:i:s') }}">{{ $image->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-auto">
                                 <div class="form-row">
                                     <div class="col">
-                                        @include('transcriptions.partials.menu')
+                                        @include('deepfake.partials.menu')
                                     </div>
                                 </div>
                             </div>
@@ -188,11 +188,11 @@
                 <div class="mt-3 align-items-center">
                     <div class="row">
                         <div class="col">
-                            <div class="mt-2 mb-3">{{ __('Showing :from-:to of :total', ['from' => $transcriptions->firstItem(), 'to' => $transcriptions->lastItem(), 'total' => $transcriptions->total()]) }}
+                            <div class="mt-2 mb-3">{{-- __('Showing :from-:to of :total', ['from' => $image->firstItem(), 'to' => $image->lastItem(), 'total' => $image->total()]) --}}
                             </div>
                         </div>
                         <div class="col-auto">
-                            {{ $transcriptions->onEachSide(1)->links() }}
+                            {{-- $image->onEachSide(1)->links() --}}
                         </div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
                 @can('dataExport', ['App\Models\User'])
-                    <a href="{{ route('transcriptions.export', Request::query()) }}" target="_self" class="btn btn-primary" id="exportButton">{{ __('Export') }}</a>
+                    <a href="{{-- route('deepfake.export', Request::query()) --}}" target="_self" class="btn btn-primary" id="exportButton">{{ __('Export') }}</a>
                 @endcan
             </div>
         </div>

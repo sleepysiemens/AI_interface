@@ -22,7 +22,7 @@ class DeepFakeController extends Controller
      */
     public function index(Request $request)
     {
-        $images = Image::where('user_id', $request->user()->id);
+        $images = Image::where('user_id', $request->user()->id)->where('network','deepfake')->get();
         return view('deepfake.container', ['view' => 'list', 'images' => $images]);
     }
 
@@ -33,6 +33,7 @@ class DeepFakeController extends Controller
      */
     public function create()
     {
+        return view('deepfake.container', ['view' => 'new']);
     }
 
     /**
@@ -62,7 +63,7 @@ class DeepFakeController extends Controller
      */
     public function store(StoreImageRequest $request)
     {
-
+        dd(1);
     }
 
     /**
