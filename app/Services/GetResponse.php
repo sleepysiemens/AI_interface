@@ -71,6 +71,21 @@ class GetResponse
         // Append the user's input
         $messages[] = ['role' => 'user', 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message')))];
 
+        $api_key=config('settings.gpt-3_openai_key');
+
+        switch ($chat->model)
+        {
+            case 'gpt-3.5-turbo':
+                $api_key=config('settings.gpt-3_openai_key');
+                break;
+            case 'gpt-3.5-turbo-16k':
+                $api_key=config('settings.gpt-3_16k_openai_key');
+                break;
+            case 'gpt-4':
+                $api_key=config('settings.gpt-4_openai_key');
+                break;
+        }
+
         $response = $httpClient->request('POST', 'https://api.openai.com/v1/chat/completions',
             [
                 'proxy' => [
@@ -80,29 +95,11 @@ class GetResponse
                 'timeout' => config('settings.request_timeout') * 60,
                 'headers' => [
                     'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
+                    'Authorization' => 'Bearer ' . $api_key,
                 ],
                 'json' => [
-                    #TODO посмотреть в документации правильные наименования моделей
-                    /*
-                     * proxies:
-http://Yq2LE0:M8bDUk@46.3.138.46:8000
-
-gpt-3.5-turbo и GPT-4 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
-
- DALEE - 3 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
-
- davinci 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
-
- whisper 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
-
- cloude 3 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
-
- DeepFace e5ef8a7cfemsh70b172c584d8ea2p18b3b5jsn393cad8c034a
-
-                     */
                     #'model' => config('settings.openai_completions_model'),
-                    'model' => config($chat->model),
+                    'model' => $chat->model,
                     'messages' => $messages,
                     'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
                     'n' => 1,
@@ -130,7 +127,7 @@ gpt-3.5-turbo и GPT-4 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
                 'timeout' => config('settings.request_timeout') * 60,
                 'headers' => [
                     'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
+                    'Authorization' => 'Bearer ' . config('settings.gpt-4_openai_key'),
                 ],
                 'multipart' => [
                     [
@@ -172,7 +169,7 @@ gpt-3.5-turbo и GPT-4 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
                 'timeout' => config('settings.request_timeout') * 60,
                 'headers' => [
                     'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
+                    'Authorization' => 'Bearer ' . config('settings.gpt-3_openai_key'),
                 ],
                 'json' => [
                     'prompt' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('description'))) . ($request->input('style') ? '. ' . __('The image should have :style style.', ['style' => $request->input('style')]) : '') . ($request->input('medium') ? '. ' . __('The image should be on a :medium medium.', ['medium' => $request->input('medium')]) : '') . ($request->input('filter') ? '. ' . __('Apply :filter filter.', ['filter' => $request->input('filter')]) : ''),
@@ -187,7 +184,41 @@ gpt-3.5-turbo и GPT-4 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
         return $response;
     }
 
+    public function get_midjorney_task_id($description)
+    {
+        $client = new Client();
+
+        $response = $client->request('POST', 'https://midjourney11.p.rapidapi.com/imagine', [
+            'body' => '{"prompt": "'.$description.'"}',
+            'headers' => [
+                'X-RapidAPI-Host' => 'midjourney11.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.midjorney_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
+
+
+        return((json_decode($response->getBody()))->taskId) ;
+    }
+
     public function MidjorneyImageResponse($request)
+    {
+        $task_id=$this->get_midjorney_task_id($request->input('description'));
+
+
+        $client = new Client();
+        $progress=0;
+
+        $response = $client->request('GET', 'https://midjourney11.p.rapidapi.com/task/?taskId='.$task_id, [
+            'headers' => [
+                'X-RapidAPI-Host' => 'midjourney11.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.midjorney_key'),
+            ],
+        ]);
+        return $response;
+    }
+
+    public function DeepFakeResponse($request)
     {
         $httpClient = new Client();
 
@@ -200,17 +231,17 @@ gpt-3.5-turbo и GPT-4 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
                 'timeout' => config('settings.request_timeout') * 60,
                 'headers' => [
                     'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . config('settings.openai_key'),
+                    'X-RapidAPI-Key' => config('settings.deepfake_key'),
+                    'X-RapidAPI-Host' => 'deepfake-face-swap.p.rapidapi.com',
+                    'content-type'=> 'application/json',
                 ],
-                'json' => [
-                    'prompt' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('description'))) . ($request->input('style') ? '. ' . __('The image should have :style style.', ['style' => $request->input('style')]) : '') . ($request->input('medium') ? '. ' . __('The image should be on a :medium medium.', ['medium' => $request->input('medium')]) : '') . ($request->input('filter') ? '. ' . __('Apply :filter filter.', ['filter' => $request->input('filter')]) : ''),
-                    'n' => $request->has('variations') ? (float) $request->input('variations') : 1,
-                    'size' => $request->input('resolution'),
-                    'response_format' => 'url',
-                    'user' => 'user' . $request->user()->id
+                'data' => [
+                    'source'=> 'https://upload.wikimedia.org/wikipedia/commons/2/26/Scarlett_Johansson_by_Gage_Skidmore_2019.jpg',
+                    'target'=> 'https://www.businessmole.com/wp-content/uploads/2023/08/Amber-Heard.jpeg'
                 ]
             ]
         );
 
-        return $response;    }
+        return $response;
+    }
 }

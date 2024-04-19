@@ -24,7 +24,7 @@
                         'title' => __('DALL-E')
                     ],
                     route('images.midjorney') =>
-                    [
+                     [
                         'icon' => 'midjorney',
                         'title' => __('Midjorney')
                     ],
@@ -42,6 +42,10 @@
             route('transcriptions') => [
                 'icon' => 'headphones',
                 'title' => __('Transcriptions')
+            ],
+            route('deepfake') => [
+                'icon' => 'deepfake',
+                'title' => __('DeepFake')
             ]
         ];
     @endphp

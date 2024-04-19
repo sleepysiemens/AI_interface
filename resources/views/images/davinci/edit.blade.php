@@ -2,32 +2,32 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.dalle'), 'title' => __('Images')],
-    ['title' => __('DALL-E')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.davinci'), 'title' => __('Images')],
+    ['title' => __('Davinci')],
     ['title' => __('Edit')],
 ]])
 
 <div class="d-flex">
-    <h1 class="h2 mb-3 text-break">{{ __('Edit') }}</h1>
+    <h1 class="h2 mb-3 text-break">{{__('Davinci')}} {{ __('Edit') }}</h1>
 </div>
 
 <div class="card border-0 shadow-sm">
     <div class="card-header align-items-center">
         <div class="row">
             <div class="col">
-                <div class="font-weight-medium py-1">{{__('DALL-E')}} {{ __('Image') }}</div>
+                <div class="font-weight-medium py-1">{{ __('Image') }}</div>
             </div>
             <div class="col-auto">
                 <div class="form-row">
                     <div class="col">
-                        @include('images.dalle.partials.menu')
+                        @include('images.davinci.partials.menu')
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <form action="{{ request()->is('admin/*') ? route('admin.images.edit', $image->id) : route('images.dalle.edit', $image->id) }}"
+        <form action="{{ request()->is('admin/*') ? route('admin.images.edit', $image->id) : route('images.davinci.edit', $image->id) }}"
               method="post" enctype="multipart/form-data">
             @csrf
 

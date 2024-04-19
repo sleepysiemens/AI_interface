@@ -8,8 +8,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 
-trait TranscriptionTrait
+trait DeepFakeTrait
 {
+    public $getResponse;
+    public function __construct(GetResponse  $getResponse)
+    {
+        $this->getResponse=$getResponse;
+    }
     /**
      * Store the Transcription.
      *

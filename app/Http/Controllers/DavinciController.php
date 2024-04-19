@@ -8,12 +8,13 @@ use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Image;
 use App\Models\Template;
 use App\Traits\DalleImageTrait;
+use App\Traits\DavinciImageTrait;
 use App\Traits\MidjorneyImageTrait;
 use Illuminate\Http\Request;
 
-class DALLEController extends Controller
+class DavinciController extends Controller
 {
-    use DalleImageTrait;
+    use DavinciImageTrait;
 
     /**
      * List the Images.
@@ -34,7 +35,7 @@ class DALLEController extends Controller
         $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'desc';
         $perPage = in_array($request->input('per_page'), [10, 25, 50, 100]) ? $request->input('per_page') : config('settings.paginate');
 
-        $images = Image::where('user_id', $request->user()->id)->where('network','=','dalle')
+        $images = Image::where('user_id', $request->user()->id)->where('network','=','davinci')
             ->when($search, function ($query) use ($search, $searchBy) {
                 return $query->searchName($search);
             })
@@ -57,7 +58,7 @@ class DALLEController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'style' => $style, 'medium' => $medium, 'filter' => $filter, 'resolution' => $resolution, 'favorite' => $favorite, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
 
-        return view('images.dalle.container', ['view' => 'list', 'images' => $images]);
+        return view('images.davinci.container', ['view' => 'list', 'images' => $images]);
     }
 
     /**
@@ -67,7 +68,7 @@ class DALLEController extends Controller
      */
     public function create()
     {
-        return view('images.dalle.container', ['view' => 'new']);
+        return view('images.davinci.container', ['view' => 'new']);
     }
 
     /**
@@ -81,7 +82,7 @@ class DALLEController extends Controller
     {
         $image = Image::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
-        return view('images.dalle.container', ['view' => 'edit', 'image' => $image]);
+        return view('images.davinci.container', ['view' => 'edit', 'image' => $image]);
     }
 
     /**
@@ -95,7 +96,7 @@ class DALLEController extends Controller
             abort(403);
         }
 
-        return view('images.dalle.container', ['view' => 'show', 'image' => $image]);
+        return view('images.davinci.container', ['view' => 'show', 'image' => $image]);
     }
 
     /**
@@ -113,7 +114,7 @@ class DALLEController extends Controller
             return back()->with('error', __('An unexpected error has occurred, please try again.') . $e->getMessage())->withInput();
         }
 
-        return view('images.dalle.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description'), 'style' => $request->input('style'), 'medium' => $request->input('medium'), 'filter' => $request->input('filter'), 'resolution' => $request->input('resolution'), 'variations' => $request->input('variations')]);
+        return view('images.davinci.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description'), 'style' => $request->input('style'), 'medium' => $request->input('medium'), 'filter' => $request->input('filter'), 'resolution' => $request->input('resolution'), 'variations' => $request->input('variations')]);
     }
 
     /**

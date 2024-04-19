@@ -2,12 +2,12 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['url' => route('images.dalle'), 'title' => __('Images')],
-    ['title' => __('DALL-E')],
+    ['url' => route('images.davinci'), 'title' => __('Images')],
+    ['title' => __('Davinci')],
     ['title' => __('New')],
 ]])
 
-<h1 class="h2 mb-0 d-inline-block">{{__('DALL-E')}} {{ __('New image') }}</h1>
+<h1 class="h2 mb-0 d-inline-block">{{__('Davinci')}} {{ __('New image') }}</h1>
 
 <div class="row mx-n2">
     <div class="col-12 col-lg-5 px-2">
@@ -22,7 +22,7 @@
             <div class="card-body">
                 @include('shared.message')
 
-                <form action="{{ route('images.dalle.new') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('images.davinci.new') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">

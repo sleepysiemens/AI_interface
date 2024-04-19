@@ -2,8 +2,8 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.dalle'), 'title' => __('Images')],
-    ['title' => __('DALL-E')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.davinci'), 'title' => __('Images')],
+    ['title' => __('Davinci')],
     ['title' => __('Image')],
 ]])
 

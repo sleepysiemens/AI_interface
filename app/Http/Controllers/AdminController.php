@@ -129,12 +129,9 @@ class AdminController extends Controller
 
 				return redirect()->route('admin.dashboard');
             }
-
+            //dump($key.'='.$value);
             Setting::where('name', $key)->update(['value' => $value]);
         }
-
-        //dd(Setting::query()->first());
-
         return back()->with('success', __('Settings saved.'));
     }
 

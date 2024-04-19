@@ -3,14 +3,13 @@
 namespace App\Traits;
 
 use App\Models\Image;
-use App\Models\MidjorneyRequest;
 use App\Services\GetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-trait MidjorneyImageTrait
+trait DavinciImageTrait
 {
     /**
      * Store the Image.
@@ -25,20 +24,22 @@ trait MidjorneyImageTrait
     {
         $response = $this->fetchImages($request);
 
-        /*$results = [];
+        $results = [];
         $i = 1;
         foreach ($response['data'] as $result) {
-            if ($request->user()->can('create', ['App\Models\MidjorneyRequest'])) {
+            if ($request->user()->can('create', ['App\Models\Image'])) {
                 $results[] = $this->imageModel($request, $result, $i);
                 $i++;
             }
         }
 
-        return $results;*/
+        return $results;
+    }
 
-        MidjorneyRequest::create(['user_id'=>auth()->user()->id, 'taskId'=>$response]);
-
-        return $response;
+    public $getResponse;
+    public function __construct(GetResponse $getResponse)
+    {
+        $this->getResponse=$getResponse;
     }
 
     /**
@@ -87,8 +88,12 @@ trait MidjorneyImageTrait
         $image = new Image;
         $image->name = $request->input('name'). ($count > 1 ? ' (' . $count .')' : '');
         $image->user_id = $request->user()->id;
+        $image->style = $request->input('style');
+        $image->medium = $request->input('medium');
+        $image->filter = $request->input('filter');
+        $image->resolution = $request->input('resolution');
         $image->result = $imageFileName;
-        $image->network = 'midjorney';
+        $image->network = 'davinci';
         $image->save();
 
         $request->user()->images_month_count += 1;
@@ -125,16 +130,9 @@ trait MidjorneyImageTrait
      * @return mixed
      * @throws GuzzleException
      */
-    private function getTaskId(Request $request)
-    {
-        $response=$this->getResponse->get_midjorney_task_id($request->description);
-
-       return $response;
-    }
-
     private function fetchImages(Request $request)
     {
-        $response=$this->getResponse->MidjorneyImageResponse($request);
+        $response = $this->getResponse->DalleImageResponse($request);
 
         return json_decode($response->getBody()->getContents(), true);
     }

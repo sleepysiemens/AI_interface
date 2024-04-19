@@ -36,12 +36,6 @@ trait DalleImageTrait
         return $results;
     }
 
-    public $getResponse;
-    public function __construct(GetResponse $getResponse)
-    {
-        $this->getResponse=$getResponse;
-    }
-
     /**
      * Store the Image.
      *
@@ -93,6 +87,7 @@ trait DalleImageTrait
         $image->filter = $request->input('filter');
         $image->resolution = $request->input('resolution');
         $image->result = $imageFileName;
+        $image->network = 'dalle';
         $image->save();
 
         $request->user()->images_month_count += 1;

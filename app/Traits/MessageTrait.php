@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 trait MessageTrait
 {
-    public $getResponse;
-    public function __construct(GetResponse  $getResponse)
-    {
-        $this->getResponse=$getResponse;
-    }
     /**
      * Store the Message.
      *

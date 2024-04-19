@@ -24,37 +24,18 @@ class MidjorneyController extends Controller
     {
         $search = $request->input('search');
         $searchBy = in_array($request->input('search_by'), ['name']) ? $request->input('search_by') : 'name';
-        $resolution = $request->input('resolution');
-        $style = $request->input('style');
-        $medium = $request->input('medium');
-        $filter = $request->input('filter');
         $favorite = $request->input('favorite');
         $sortBy = in_array($request->input('sort_by'), ['id', 'name']) ? $request->input('sort_by') : 'id';
         $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'desc';
         $perPage = in_array($request->input('per_page'), [10, 25, 50, 100]) ? $request->input('per_page') : config('settings.paginate');
 
-        $images = Image::where('user_id', $request->user()->id)
-            ->when($search, function ($query) use ($search, $searchBy) {
-                return $query->searchName($search);
-            })
-            ->when($resolution, function ($query) use ($resolution) {
-                return $query->ofResolution($resolution);
-            })
-            ->when($style, function ($query) use ($style) {
-                return $query->ofStyle($style);
-            })
-            ->when($medium, function ($query) use ($medium) {
-                return $query->ofMedium($medium);
-            })
-            ->when($filter, function ($query) use ($filter) {
-                return $query->ofFilter($filter);
-            })
+        $images = Image::where('user_id', $request->user()->id)->where('network','=','midjorney')
             ->when(isset($favorite) && is_numeric($favorite), function ($query) use ($favorite) {
                 return $query->ofFavorite($favorite);
             })
             ->orderBy($sortBy, $sort)
             ->paginate($perPage)
-            ->appends(['search' => $search, 'style' => $style, 'medium' => $medium, 'filter' => $filter, 'resolution' => $resolution, 'favorite' => $favorite, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
+            ->appends(['search' => $search, 'favorite' => $favorite, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
 
         return view('images.midjorney.container', ['view' => 'list', 'images' => $images]);
     }
@@ -112,7 +93,7 @@ class MidjorneyController extends Controller
             return back()->with('error', __('An unexpected error has occurred, please try again.') . $e->getMessage())->withInput();
         }
 
-        return view('images.midjorney.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description'), 'style' => $request->input('style'), 'medium' => $request->input('medium'), 'filter' => $request->input('filter'), 'resolution' => $request->input('resolution'), 'variations' => $request->input('variations')]);
+        return view('images.midjorney.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description')]);
     }
 
     /**

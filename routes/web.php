@@ -256,13 +256,22 @@ Route::post('/images/mj/{id}/edit', 'MidjorneyController@update')->middleware('v
 Route::post('/images/mj/{id}/destroy', 'MidjorneyController@destroy')->middleware('verified')->name('images.midjorney.destroy');
 
 // Image routes Davinci
-Route::get('/images/davinci', 'MidjorneyController@index')->middleware('verified')->name('images.davinci');
-Route::get('/images/davinci/new', 'MidjorneyController@create')->middleware('verified')->name('images.davinci.new');
-Route::get('/images/davinci/{id}/edit', 'MidjorneyController@edit')->middleware('verified')->name('images.davinci.edit');
-Route::get('/images/davinci/{id}', 'MidjorneyController@show')->middleware('verified')->name('images.davinci.show');
-Route::post('/images/davinci/new', 'MidjorneyController@store')->middleware('verified');
-Route::post('/images/davinci/{id}/edit', 'MidjorneyController@update')->middleware('verified');
-Route::post('/images/davinci/{id}/destroy', 'MidjorneyController@destroy')->middleware('verified')->name('images.davinci.destroy');
+Route::get('/images/davinci', 'DavinciController@index')->middleware('verified')->name('images.davinci');
+Route::get('/images/davinci/new', 'DavinciController@create')->middleware('verified')->name('images.davinci.new');
+Route::get('/images/davinci/{id}/edit', 'DavinciController@edit')->middleware('verified')->name('images.davinci.edit');
+Route::get('/images/davinci/{id}', 'DavinciController@show')->middleware('verified')->name('images.davinci.show');
+Route::post('/images/davinci/new', 'DavinciController@store')->middleware('verified');
+Route::post('/images/davinci/{id}/edit', 'DavinciController@update')->middleware('verified');
+Route::post('/images/davinci/{id}/destroy', 'DavinciController@destroy')->middleware('verified')->name('images.davinci.destroy');
+
+// DeepFake routes
+Route::get('/deepfake', 'DeepFakeController@index')->middleware('verified')->name('deepfake');
+Route::get('/deepfake/new', 'DeepFakeController@create')->middleware('verified')->name('deepfake.new');
+Route::get('/deepfake/{id}/edit', 'DeepFakeController@edit')->middleware('verified')->name('deepfake.edit');
+Route::get('/deepfake/{id}', 'DeepFakeController@show')->middleware('verified')->name('deepfake.show');
+Route::post('/deepfake/new', 'DeepFakeController@store')->middleware('verified');
+Route::post('/deepfake/{id}/edit', 'DeepFakeController@update')->middleware('verified');
+Route::post('/deepfake/{id}/destroy', 'DeepFakeController@destroy')->middleware('verified')->name('deepfake.destroy');
 
 
 // Chat routes
@@ -439,3 +448,6 @@ Route::prefix('/developers')->group(function () {
     Route::get('/transcriptions', 'DeveloperController@transcriptions')->name('developers.transcriptions');
     Route::get('/account', 'DeveloperController@account')->name('developers.account');
 });
+
+
+Route::get('/test', 'TestController@index')->name('test');

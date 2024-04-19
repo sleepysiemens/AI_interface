@@ -2,7 +2,8 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['title' => __('Images')]
+    ['title' => __('Images')],
+    ['title' => __('DALL-E')]
 ]])
 
 <div class="d-flex">
