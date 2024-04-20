@@ -356,7 +356,7 @@
                                 @include('icons.chat', ['class' => 'fill-current width-6 height-6'])
                             </div>
                             <div class="d-flex flex-column justify-content-center">
-                                <a href="{{ route('chats.new') }}" class="text-dark font-weight-medium text-decoration-none stretched-link">{{ __('Chat') }}</a>
+                                <a href="{{ route('chats.gpt.new') }}" class="text-dark font-weight-medium text-decoration-none stretched-link">{{ __('Chat') }}</a>
 
                                 <div class="text-muted">
                                     {{ __('Start a new chat.') }}

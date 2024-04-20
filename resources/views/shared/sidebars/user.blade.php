@@ -31,14 +31,25 @@
                     route('images.davinci') =>
                     [
                         'icon' => 'davinci',
-                        'title' => __('Davinci')
+                        'title' => __('Davinci'),
                     ],
                 ],
             ],
-            route('chats') => [
-                'icon' => 'chat',
-                'title' => __('Chats')
-            ],
+            'chats'=>[
+                        'icon' => 'chat',
+                        'title' => __('Chats'),
+                        'menu'=>
+                        [
+                             route('chats.gpt') => [
+                            'icon' => 'chat',
+                            'title' => __('Chat GPT')
+                            ],
+                            route('chats.cloude') => [
+                            'icon' => 'chat',
+                            'title' => __('Cloude 3')
+                            ],
+                        ],
+                    ],
             route('transcriptions') => [
                 'icon' => 'headphones',
                 'title' => __('Transcriptions')

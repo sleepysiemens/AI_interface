@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\StoreMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
-use App\Traits\MessageTrait;
+use App\Traits\MessageGPTTrait;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    use MessageTrait;
+    use MessageGPTTrait;
 
     /**
      * Display a listing of the resource.

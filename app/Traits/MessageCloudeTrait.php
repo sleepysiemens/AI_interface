@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-trait MessageTrait
+trait MessageCloudeTrait
 {
     /**
      * Store the Message.
@@ -31,7 +31,7 @@ trait MessageTrait
             $text = trim($request->input('message'));
         } else {
             try {
-                $result = json_decode($this->getResponse->messageResponse($request, $chat)->getBody()->getContents(), true);
+                $result = json_decode($this->getResponse->messageCloudeResponse($request, $chat)->getBody()->getContents(), true);
 
                 $text = $result['choices'][0]['message']['content'] ?? '';
             } catch (\Exception $e) {

@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['url' => route('chats'), 'title' => __('Chats')],
+    ['url' => route('chats.cloude'), 'title' => __('Chats')],
     ['title' => __('New')],
 ]])
 
@@ -19,7 +19,7 @@
     <div class="card-body">
         @include('shared.message')
 
-        <form action="{{ route('chats.new') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('chats.cloude.new') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

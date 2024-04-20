@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.chats') : route('chats'), 'title' => __('Chats')],
+    ['url' => request()->is('admin/*') ? route('admin.chats.cloude') : route('chats.cloude'), 'title' => __('Chats')],
     ['title' => __('Chat')],
 ]])
 
@@ -14,7 +14,7 @@
             <div class="col">
                 <a href="#" class="btn text-secondary d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@include('icons.more-horiz', ['class' => 'fill-current width-4 height-4'])&#8203;</a>
 
-                @include('chats.partials.menu')
+                @include('gpt_chats.partials.menu')
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
             <div class="col-auto">
                 <div class="form-row">
                     <div class="col">
-                        <form method="GET" action="{{ route('chats.show', ['id' => $chat->id]) }}">
+                        <form method="GET" action="{{ route('chats.cloude.show', ['id' => $chat->id]) }}">
                             <div class="input-group input-group-sm">
                                 <input class="form-control" name="search" placeholder="{{ __('Search') }}" value="{{ app('request')->input('search') }}">
                                 <div class="input-group-append">
@@ -49,7 +49,7 @@
                                                     <div class="font-weight-medium m-0 text-body">{{ __('Filters') }}</div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <a href="{{ route('chats.show', ['id' => $chat->id]) }}" class="text-secondary">{{ __('Reset') }}</a>
+                                                    <a href="{{ route('chats.cloude.show', ['id' => $chat->id]) }}" class="text-secondary">{{ __('Reset') }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -122,22 +122,22 @@
         </div>
     </div>
 
-    <form action="{{ route('messages.new') }}" method="post" class="d-flex flex-fill flex-column position-relative flex-grow-1 overflow-auto" id="form-chat">
+    <form action="{{ route('messages.gpt.new') }}" method="post" class="d-flex flex-fill flex-column position-relative flex-grow-1 overflow-auto" id="form-chat">
 
         @csrf
 
         <input name="chat_id" type="hidden" value="{{ $chat->id }}">
 
         <div class="card-body flex-grow-1 overflow-auto" id="chat-container">
-            {{ $messages->links('chats.partials.pagination', ['paginator' => $messages, 'previous' => true]) }}
+            {{ $messages->links('gpt_chats.partials.pagination', ['paginator' => $messages, 'previous' => true]) }}
 
             <div id="chat-messages">
                 @foreach($messages->reverse() as $message)
-                    @include('chats.partials.message')
+                    @include('gpt_chats.partials.message')
                 @endforeach
             </div>
 
-            {{ $messages->links('chats.partials.pagination', ['paginator' => $messages, 'next' => true]) }}
+            {{ $messages->links('gpt_chats.partials.pagination', ['paginator' => $messages, 'next' => true]) }}
         </div>
 
         @if ($chat->user_id == Auth::user()->id)
@@ -187,7 +187,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
                 @can('dataExport', ['App\Models\User'])
-                    <a href="{{ route('chats.export', ['id' => $chat->id] + Request::query()) }}" target="_self" class="btn btn-primary" id="exportButton">{{ __('Export') }}</a>
+                    <a href="{{ route('chats.cloude.export', ['id' => $chat->id] + Request::query()) }}" target="_self" class="btn btn-primary" id="exportButton">{{ __('Export') }}</a>
                 @endcan
             </div>
         </div>

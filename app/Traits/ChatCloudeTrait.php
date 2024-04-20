@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 
-trait ChatTrait
+trait ChatCloudeTrait
 {
     /**
      * Store the Chat.
@@ -20,6 +20,7 @@ trait ChatTrait
         $chat->name = $request->input('name');
         $chat->behavior = $request->input('behavior');
         $chat->user_id = $request->user()->id;
+        $chat->network = 'cloude';
         $chat->save();
 
         $request->user()->chats_month_count += 1;
@@ -55,7 +56,7 @@ trait ChatTrait
         }
 
         $chat->save();
-        
+
         return $chat;
     }
 }

@@ -10,7 +10,7 @@
         <h1 class="h2 mb-3 d-inline-block">{{ __('Chats') }}</h1>
     </div>
     <div>
-        <a href="{{ route('chats.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
+        <a href="{{ route('chats.cloude.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>
     </div>
 </div>
 
@@ -21,7 +21,7 @@
                 <div class="font-weight-medium py-1">{{ __('Chats') }}</div>
             </div>
             <div class="col-auto">
-                <form method="GET" action="{{ route('chats') }}">
+                <form method="GET" action="{{ route('chats.cloude') }}">
                     <div class="input-group input-group-sm">
                         <input class="form-control" name="search" placeholder="{{ __('Search') }}" value="{{ app('request')->input('search') }}">
                         <div class="input-group-append">
@@ -35,7 +35,7 @@
                                             <div class="font-weight-medium m-0 text-body">{{ __('Filters') }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="{{ route('chats') }}" class="text-secondary">{{ __('Reset') }}</a>
+                                            <a href="{{ route('chats.cloude') }}" class="text-secondary">{{ __('Reset') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                                         <div class="text-truncate">
                                             <div class="d-flex align-items-center">
                                                 <div class="d-flex align-items-center text-truncate">
-                                                    <a href="{{ route('chats.show', $chat->id) }}" class="text-truncate">{{ $chat->name }}</a>
+                                                    <a href="{{ route('chats.cloude.show', $chat->id) }}" class="text-truncate">{{ $chat->name }}</a>
 
                                                     @if($chat->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
                                                 </div>
@@ -178,7 +178,7 @@
                             <div class="col-auto">
                                 <div class="form-row">
                                     <div class="col">
-                                        @include('chats.partials.menu')
+                                        @include('gpt_chats.partials.menu')
                                     </div>
                                 </div>
                             </div>

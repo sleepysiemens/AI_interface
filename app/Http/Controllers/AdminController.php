@@ -31,7 +31,7 @@ use App\Models\Setting;
 use App\Models\TaxRate;
 use App\Models\Template;
 use App\Models\Transcription;
-use App\Traits\ChatTrait;
+use App\Traits\ChatGPTTrait;
 use App\Traits\DocumentTrait;
 use App\Traits\MidjorneyImageTrait;
 use App\Traits\TemplateTrait;
@@ -46,7 +46,7 @@ use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    use UserTrait, TemplateTrait, DocumentTrait, MidjorneyImageTrait, ChatTrait;
+    use UserTrait, TemplateTrait, DocumentTrait, MidjorneyImageTrait, ChatGPTTrait;
 
     /**
      * Show the Dashboard.

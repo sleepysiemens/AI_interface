@@ -19,14 +19,14 @@
             <div class="col-auto">
                 <div class="form-row">
                     <div class="col">
-                        @include('chats.partials.menu')
+                        @include('chats.gpt.partials.menu')
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <form action="{{ request()->is('admin/*') ? route('admin.chats.edit', $chat->id) : route('chats.edit', $chat->id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ request()->is('admin/*') ? route('admin.chats.gpt.edit', $chat->id) : route('chats.gpt.edit', $chat->id) }}" method="post" enctype="multipart/form-data">
             @csrf
 
             @include('shared.message')

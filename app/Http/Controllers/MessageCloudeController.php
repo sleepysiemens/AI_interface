@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMessageRequest;
-use App\Traits\MessageTrait;
+use App\Traits\MessageCloudeTrait;
 
-class   MessageController extends Controller
+class   MessageCloudeController extends Controller
 {
-    use MessageTrait;
+    use MessageCloudeTrait;
 
     /**
      * Store the Chat.
@@ -20,6 +20,6 @@ class   MessageController extends Controller
     {
         $message = $this->messageStore($request);
 
-        return response()->json(['message' => view('chats.partials.message', ['message' => $message])->render()], 200);
+        return response()->json(['message' => view('cloude_chats.partials.message', ['message' => $message])->render()], 200);
     }
 }

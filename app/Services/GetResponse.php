@@ -43,7 +43,7 @@ class GetResponse
         return $response;
     }
 
-    public function messageResponse($request, $chat)
+    public function messageGPTResponse($request, $chat)
     {
         $httpClient = new Client();
 
@@ -112,6 +112,77 @@ class GetResponse
 
         return $response;
     }
+
+    public function messageCloudeResponse($request, $chat)
+    {
+        $httpClient = new Client();
+
+        $oldMessages = Message::where([['chat_id', '=', $request->input('chat_id')], ['user_id', '=', $request->user()->id]])->orderBy('id', 'desc')->limit(20)->get()->reverse()->toArray();
+
+        // If there's a chat history
+        if ($oldMessages) {
+            // Check if the last message is from the user
+            if (end($oldMessages)['user_id'] == $request->user()->id) {
+                // Remove the last message
+                array_pop($oldMessages);
+            }
+        }
+
+        // If there's a behavior defined
+        if ($chat->behavior) {
+            $messages[] = ['role' => 'system', 'content' => $chat->behavior];
+        }
+
+        // Prepare the chat history
+        foreach ($oldMessages as $oldMessage) {
+            $messages[] = ['role' => $oldMessage['role'], 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $oldMessage['result']))];
+        }
+
+        // Append the user's input
+        $messages[] = ['role' => 'user', 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message')))];
+
+        $api_key=config('settings.gpt-3_openai_key');
+
+        switch ($chat->model)
+        {
+            case 'gpt-3.5-turbo':
+                $api_key=config('settings.gpt-3_openai_key');
+                break;
+            case 'gpt-3.5-turbo-16k':
+                $api_key=config('settings.gpt-3_16k_openai_key');
+                break;
+            case 'gpt-4':
+                $api_key=config('settings.gpt-4_openai_key');
+                break;
+        }
+
+        $response = $httpClient->request('POST', 'https://api.openai.com/v1/chat/completions',
+            [
+                'proxy' => [
+                    'http' => getRequestProxy(),
+                    'https' => getRequestProxy()
+                ],
+                'timeout' => config('settings.request_timeout') * 60,
+                'headers' => [
+                    'User-Agent' => config('settings.request_user_agent'),
+                    'Authorization' => 'Bearer ' . $api_key,
+                ],
+                'json' => [
+                    #'model' => config('settings.openai_completions_model'),
+                    'model' => $chat->model,
+                    'messages' => $messages,
+                    'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
+                    'n' => 1,
+                    'frequency_penalty' => 0,
+                    'presence_penalty' => 0,
+                    'user' => 'user' . $request->user()->id
+                ]
+            ]
+        );
+
+        return $response;
+    }
+
 
     public function TranscriptionResponse($request, $fileName)
     {

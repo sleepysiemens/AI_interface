@@ -7,12 +7,12 @@ use App\Http\Requests\API\StoreChatRequest;
 use App\Http\Requests\API\UpdateChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Models\Chat;
-use App\Traits\ChatTrait;
+use App\Traits\ChatGPTTrait;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    use ChatTrait;
+    use ChatGPTTrait;
 
     /**
      * Display a listing of the resource.

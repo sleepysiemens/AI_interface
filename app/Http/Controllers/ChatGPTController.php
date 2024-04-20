@@ -6,7 +6,7 @@ use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
 use App\Models\Chat;
 use App\Models\Message;
-use App\Traits\ChatTrait;
+use App\Traits\ChatGPTTrait;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -15,9 +15,9 @@ use Illuminate\Http\Response;
 use League\Csv as CSV;
 use League\Csv\CannotInsertRecord;
 
-class ChatController extends Controller
+class ChatGPTController extends Controller
 {
-    use ChatTrait;
+    use ChatGPTTrait;
 
     /**
      * List the Chats.
@@ -34,7 +34,7 @@ class ChatController extends Controller
         $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'desc';
         $perPage = in_array($request->input('per_page'), [10, 25, 50, 100]) ? $request->input('per_page') : config('settings.paginate');
 
-        $chats = Chat::where('user_id', $request->user()->id)
+        $chats = Chat::where('user_id', $request->user()->id)->where('network','gpt')
             ->when($search, function ($query) use ($search, $searchBy) {
                 return $query->searchName($search);
             })
@@ -45,7 +45,7 @@ class ChatController extends Controller
             ->paginate($perPage)
             ->appends(['search' => $search, 'search_by' => $searchBy, 'favorite' => $favorite, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
 
-        return view('chats.container', ['view' => 'list', 'chats' => $chats]);
+        return view('gpt_chats.container', ['view' => 'list', 'chats' => $chats]);
     }
 
     /**
@@ -55,7 +55,7 @@ class ChatController extends Controller
      */
     public function create()
     {
-        return view('chats.container', ['view' => 'new']);
+        return view('gpt_chats.container', ['view' => 'new']);
     }
 
     /**
@@ -69,7 +69,7 @@ class ChatController extends Controller
     {
         $chat = Chat::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
-        return view('chats.container', ['view' => 'edit', 'chat' => $chat]);
+        return view('gpt_chats.container', ['view' => 'edit', 'chat' => $chat]);
     }
 
     /**
@@ -102,7 +102,7 @@ class ChatController extends Controller
         }
 
         //dd(config('settings.openai_completions_model'));
-        return view('chats.container', ['view' => 'show', 'chat' => $chat, 'messages' => $messages]);
+        return view('gpt_chats.container', ['view' => 'show', 'chat' => $chat, 'messages' => $messages]);
     }
 
     /**
@@ -115,7 +115,7 @@ class ChatController extends Controller
     {
         $this->chatStore($request);
 
-        return redirect()->route('chats')->with('success', __(':name has been created.', ['name' => $request->input('name')]));
+        return redirect()->route('chats.gpt')->with('success', __(':name has been created.', ['name' => $request->input('name')]));
     }
 
     /**
@@ -148,7 +148,7 @@ class ChatController extends Controller
 
         $chat->delete();
 
-        return redirect()->route('chats')->with('success', __(':name has been deleted.', ['name' => $chat->name]));
+        return redirect()->route('chats.gpt')->with('success', __(':name has been deleted.', ['name' => $chat->name]));
     }
 
     /**
