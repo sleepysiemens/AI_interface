@@ -122,7 +122,7 @@
         </div>
     </div>
 
-    <form action="{{ route('messages.gpt.new') }}" method="post" class="d-flex flex-fill flex-column position-relative flex-grow-1 overflow-auto" id="form-chat">
+    <form action="{{ route('messages.cloude.new') }}" method="post" class="d-flex flex-fill flex-column position-relative flex-grow-1 overflow-auto" id="form-chat">
 
         @csrf
 

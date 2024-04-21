@@ -7,7 +7,7 @@
 
 <div class="d-flex">
     <div class="flex-grow-1">
-        <h1 class="h2 mb-3 d-inline-block">{{ __('Chats') }}</h1>
+        <h1 class="h2 mb-3 d-inline-block">{{ __('Chats') }} {{__('Claude 3')}}</h1>
     </div>
     <div>
         <a href="{{ route('chats.cloude.new') }}" class="btn btn-primary mb-3">{{ __('New') }}</a>

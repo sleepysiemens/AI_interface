@@ -141,6 +141,7 @@ class GetResponse
         // Append the user's input
         $messages[] = ['role' => 'user', 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message')))];
 
+        /*
         $api_key=config('settings.gpt-3_openai_key');
 
         switch ($chat->model)
@@ -155,32 +156,30 @@ class GetResponse
                 $api_key=config('settings.gpt-4_openai_key');
                 break;
         }
+*/
 
-        $response = $httpClient->request('POST', 'https://api.openai.com/v1/chat/completions',
-            [
-                'proxy' => [
-                    'http' => getRequestProxy(),
-                    'https' => getRequestProxy()
-                ],
-                'timeout' => config('settings.request_timeout') * 60,
-                'headers' => [
-                    'User-Agent' => config('settings.request_user_agent'),
-                    'Authorization' => 'Bearer ' . $api_key,
-                ],
-                'json' => [
-                    #'model' => config('settings.openai_completions_model'),
-                    'model' => $chat->model,
-                    'messages' => $messages,
-                    'temperature' => $request->has('creativity') ? (float) $request->input('creativity') : 0.5,
-                    'n' => 1,
-                    'frequency_penalty' => 0,
-                    'presence_penalty' => 0,
-                    'user' => 'user' . $request->user()->id
-                ]
-            ]
-        );
+        $client = new Client();
 
-        return $response;
+        $response = $client->request('POST', 'https://claude-3.p.rapidapi.com/messages', [
+            'body' => '{
+    "model": "claude-3-opus-20240229",
+    "max_tokens": 1024,
+    "messages": [
+        {
+            "role": "user",
+            "content": "'.trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message'))).'"
+        }
+    ]
+}',
+            'headers' => [
+                'X-RapidAPI-Host' => 'claude-3.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.claude3_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
+
+        $result= json_decode($response->getBody());
+        return ($result);
     }
 
 
@@ -239,7 +238,7 @@ class GetResponse
                 ],
                 'timeout' => config('settings.request_timeout') * 60,
                 'headers' => [
-                    'User-Agent' => config('settings.request_user_agent'),
+                    'User-Agent' => config('settings.re quest_user_agent'),
                     'Authorization' => 'Bearer ' . config('settings.gpt-3_openai_key'),
                 ],
                 'json' => [

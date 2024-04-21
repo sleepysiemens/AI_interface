@@ -34,7 +34,7 @@ class ChatCloudeController extends Controller
         $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'desc';
         $perPage = in_array($request->input('per_page'), [10, 25, 50, 100]) ? $request->input('per_page') : config('settings.paginate');
 
-        $chats = Chat::where('user_id', $request->user()->id)->where('network','cloude')
+        $chats = Chat::where('user_id', $request->user()->id)->where('network','claude')
             ->when($search, function ($query) use ($search, $searchBy) {
                 return $query->searchName($search);
             })

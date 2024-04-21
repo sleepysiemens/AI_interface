@@ -286,18 +286,18 @@ Route::post('/chats/gpt/{id}/edit', 'ChatGPTController@update')->middleware('ver
 Route::post('/chats/gpt/{id}/destroy', 'ChatGPTController@destroy')->middleware('verified')->name('chats.gpt.destroy');
 
 // Cloude 3
-Route::get('/chats/cloude', 'ChatCloudeController@index')->middleware('verified')->name('chats.cloude');
-Route::get('/chats/cloude/new', 'ChatCloudeController@create')->middleware('verified')->name('chats.cloude.new');
-Route::get('/chats/cloude/{id}/edit', 'ChatCloudeController@edit')->middleware('verified')->name('chats.cloude.edit');
-Route::get('/chats/cloude/{id}', 'ChatCloudeController@show')->middleware('verified')->name('chats.cloude.show');
-Route::get('/chats/cloude/{id}/export', 'ChatCloudeController@export')->middleware('verified')->name('chats.cloude.export');
-Route::post('/chats/cloude/new', 'ChatCloudeController@store')->middleware('verified');
-Route::post('/chats/cloude/{id}/edit', 'ChatCloudeController@update')->middleware('verified');
-Route::post('/chats/cloude/{id}/destroy', 'ChatCloudeController@destroy')->middleware('verified')->name('chats.cloude.destroy');
+Route::get('/chats/claude', 'ChatCloudeController@index')->middleware('verified')->name('chats.cloude');
+Route::get('/chats/claude/new', 'ChatCloudeController@create')->middleware('verified')->name('chats.cloude.new');
+Route::get('/chats/claude/{id}/edit', 'ChatCloudeController@edit')->middleware('verified')->name('chats.cloude.edit');
+Route::get('/chats/claude/{id}', 'ChatCloudeController@show')->middleware('verified')->name('chats.cloude.show');
+Route::get('/chats/claude/{id}/export', 'ChatCloudeController@export')->middleware('verified')->name('chats.cloude.export');
+Route::post('/chats/claude/new', 'ChatCloudeController@store')->middleware('verified');
+Route::post('/chats/claude/{id}/edit', 'ChatCloudeController@update')->middleware('verified');
+Route::post('/chats/claude/{id}/destroy', 'ChatCloudeController@destroy')->middleware('verified')->name('chats.cloude.destroy');
 
 // Message routes
 Route::post('/messages/gpt/new', 'MessageGPTController@store')->middleware('verified')->name('messages.gpt.new');
-Route::post('/messages/cloude/new', 'MessageCloudeController@store')->middleware('verified')->name('messages.cloude.new');
+Route::post('/messages/claude/new', 'MessageCloudeController@store')->middleware('verified')->name('messages.cloude.new');
 
 // Speech routes
 Route::get('/transcriptions', 'TranscriptionController@index')->middleware('verified')->name('transcriptions');

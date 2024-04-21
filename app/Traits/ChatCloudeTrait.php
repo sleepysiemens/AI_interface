@@ -20,7 +20,7 @@ trait ChatCloudeTrait
         $chat->name = $request->input('name');
         $chat->behavior = $request->input('behavior');
         $chat->user_id = $request->user()->id;
-        $chat->network = 'cloude';
+        $chat->network = 'claude';
         $chat->save();
 
         $request->user()->chats_month_count += 1;

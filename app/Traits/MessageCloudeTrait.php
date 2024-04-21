@@ -31,9 +31,10 @@ trait MessageCloudeTrait
             $text = trim($request->input('message'));
         } else {
             try {
-                $result = json_decode($this->getResponse->messageCloudeResponse($request, $chat)->getBody()->getContents(), true);
-
-                $text = $result['choices'][0]['message']['content'] ?? '';
+                //$result = json_decode($this->getResponse->messageCloudeResponse($request, $chat)->getBody()->getContents(), true);
+                $result=($this->getResponse->messageCloudeResponse($request, $chat));
+                //$text = $result['choices'][0]['message']['content'] ?? '';
+                $text = $result->content[0]->text ?? '';
             } catch (\Exception $e) {
                 $text = $e->getMessage();
             }

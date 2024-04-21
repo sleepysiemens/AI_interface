@@ -46,7 +46,7 @@
                             ],
                             route('chats.cloude') => [
                             'icon' => 'chat',
-                            'title' => __('Cloude 3')
+                            'title' => __('Claude 3')
                             ],
                         ],
                     ],
