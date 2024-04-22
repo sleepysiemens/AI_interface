@@ -71,8 +71,8 @@ class RunwayImageController extends Controller
     {
         $image = Runway::where([['id', $id]])->firstOrFail();
         $client = new Client();
-        if($image->status=='new')
-        {
+        #if($image->status=='new')
+        #{
             $response = $client->request('GET', 'https://runwayml.p.rapidapi.com/status?uuid='.$image->task_uuid, [
                 'headers' => [
                     'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
@@ -94,12 +94,12 @@ class RunwayImageController extends Controller
             }
             else
                 $link=null;
-        }
-        else
-        {
-            $link['gif']=$image->link;
-            $link['video']=$image->video_url;
-        }
+        #}
+        #else
+        #{
+         #   $link['gif']=$image->link;
+         #   $link['video']=$image->video_url;
+        #}
 
         return view('runway.image.container', ['view' => 'show', 'image' => $image, 'link' => $link]);
     }
