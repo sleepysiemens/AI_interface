@@ -309,8 +309,10 @@ Route::post('/transcriptions/new', 'TranscriptionController@store')->middleware(
 Route::post('/transcriptions/{id}/edit', 'TranscriptionController@update')->middleware('verified');
 Route::post('/transcriptions/{id}/destroy', 'TranscriptionController@destroy')->middleware('verified')->name('transcriptions.destroy');
 
-// Runway text routes
+// Runway routes
 Route::group(['prefix'=>'runway'], function (){
+
+    // Runway text routes
     Route::group(['prefix'=>'text'], function (){
         Route::get('/', 'RunwayTextController@index')->middleware('verified')->name('runway.text');
         Route::get('/new', 'RunwayTextController@create')->middleware('verified')->name('runway.text.new');
@@ -319,6 +321,28 @@ Route::group(['prefix'=>'runway'], function (){
         Route::post('/new', 'RunwayTextController@store')->middleware('verified')->name('runway.text.store');
         Route::post('/{id}/edit', 'RunwayTextController@update')->middleware('verified');
         Route::post('/{id}/destroy', 'RunwayTextController@destroy')->middleware('verified')->name('runway.text.destroy');
+    });
+
+    // Runway image routes
+    Route::group(['prefix'=>'image'], function (){
+        Route::get('/', 'RunwayImageController@index')->middleware('verified')->name('runway.image');
+        Route::get('/new', 'RunwayImageController@create')->middleware('verified')->name('runway.image.new');
+        Route::get('/{id}/edit', 'RunwayImageController@edit')->middleware('verified')->name('runway.image.edit');
+        Route::get('/{id}', 'RunwayImageController@show')->middleware('verified')->name('runway.image.show');
+        Route::post('/new', 'RunwayImageController@store')->middleware('verified')->name('runway.image.store');
+        Route::post('/{id}/edit', 'RunwayImageController@update')->middleware('verified');
+        Route::post('/{id}/destroy', 'RunwayImageController@destroy')->middleware('verified')->name('runway.image.destroy');
+    });
+
+    // Runway image description routes
+    Route::group(['prefix'=>'image_description'], function (){
+        Route::get('/', 'RunwayImageDescriptionController@index')->middleware('verified')->name('runway.image_description');
+        Route::get('/new', 'RunwayImageDescriptionController@create')->middleware('verified')->name('runway.image_description.new');
+        Route::get('/{id}/edit', 'RunwayImageDescriptionController@edit')->middleware('verified')->name('runway.image_description.edit');
+        Route::get('/{id}', 'RunwayImageDescriptionController@show')->middleware('verified')->name('runway.image_description.show');
+        Route::post('/new', 'RunwayImageDescriptionController@store')->middleware('verified')->name('runway.image_description.store');
+        Route::post('/{id}/edit', 'RunwayImageDescriptionController@update')->middleware('verified');
+        Route::post('/{id}/destroy', 'RunwayImageDescriptionController@destroy')->middleware('verified')->name('runway.image_description.destroy');
     });
 
 });

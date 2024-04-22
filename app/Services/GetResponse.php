@@ -336,8 +336,50 @@ class GetResponse
             ],
         ]);
 
+        return json_decode($response->getBody())->uuid;
+    }
 
+    public function RunwayImageResponse($request)
+    {
+        $client = new Client();
 
+        $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/image', [
+            'body' => '{
+    "img_prompt": "'.$request->source.'",
+    "motion": 5,
+    "seed": 0,
+    "upscale": true,
+    "interpolate": true
+}',
+            'headers' => [
+                'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.runway_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
+
+        return json_decode($response->getBody())->uuid;
+    }
+
+    public function RunwayImageDescriptionResponse($request)
+    {
+        $client = new Client();
+
+        $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/imageDescription', [
+            'body' => '{
+    "img_prompt": "'.$request->source.'",
+    "text_prompt": "'.$request->description.'",
+    "motion": 5,
+    "seed": 0,
+    "upscale": true,
+    "interpolate": true
+}',
+            'headers' => [
+                'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.runway_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
 
         return json_decode($response->getBody())->uuid;
     }

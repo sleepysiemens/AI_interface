@@ -50,7 +50,7 @@
                             ],
                         ],
                     ],
-                                 'runway' => [
+                 'runway' => [
                 'icon' => 'runway',
                 'title' => __('Runway'),
                 'menu'=>
@@ -59,20 +59,16 @@
                         'icon' => 'runway',
                         'title' => __('Generate by text')
                         ],
-                    'runway2' => [
+                    route('runway.image') => [
                         'icon' => 'runway',
                         'title' => __('Generate by image')
                         ],
-                    'runway3' => [
+                    route('runway.image_description') => [
                         'icon' => 'runway',
                         'title' => __('Generate by image and description')
                         ],
-                    'runway4' => [
-                        'icon' => 'runway',
-                        'title' => __('Extend video')
                     ],
                 ],
-            ],
 
             route('transcriptions') => [
                 'icon' => 'headphones',

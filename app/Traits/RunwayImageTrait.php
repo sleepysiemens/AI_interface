@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-trait RunwayTextTrait
+trait RunwayImageTrait
 {
     /**
      * Store the Image.
@@ -58,7 +58,7 @@ trait RunwayTextTrait
         $image->user_id = $request->user()->id;
         $image->status = 'new';
         $image->task_uuid = $result;
-        $image->type = 'text';
+        $image->type = 'image';
         $image->save();
 
         $request->user()->images_month_count += 1;
@@ -93,7 +93,7 @@ trait RunwayTextTrait
      */
     private function fetchImages(Request $request)
     {
-        $response = $this->getResponse->RunwayTextResponse($request);
+        $response = $this->getResponse->RunwayImageResponse($request);
 
         return $response;
     }
