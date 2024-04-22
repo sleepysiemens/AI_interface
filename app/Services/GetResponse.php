@@ -314,4 +314,31 @@ class GetResponse
 
         return $response;
     }
+
+    public function RunwayTextResponse($request)
+    {
+        $client = new Client();
+
+        $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/text', [
+            'body' => '{
+    "text_prompt": "'.$request->description.'",
+    "width": 1344,
+    "height": 768,
+    "motion": 5,
+    "seed": 0,
+    "upscale": true,
+    "interpolate": true
+}',
+            'headers' => [
+                'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.runway_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
+
+
+
+
+        return json_decode($response->getBody())->uuid;
+    }
 }

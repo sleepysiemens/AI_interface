@@ -50,6 +50,30 @@
                             ],
                         ],
                     ],
+                                 'runway' => [
+                'icon' => 'runway',
+                'title' => __('Runway'),
+                'menu'=>
+                [
+                    route('runway.text') => [
+                        'icon' => 'runway',
+                        'title' => __('Generate by text')
+                        ],
+                    'runway2' => [
+                        'icon' => 'runway',
+                        'title' => __('Generate by image')
+                        ],
+                    'runway3' => [
+                        'icon' => 'runway',
+                        'title' => __('Generate by image and description')
+                        ],
+                    'runway4' => [
+                        'icon' => 'runway',
+                        'title' => __('Extend video')
+                    ],
+                ],
+            ],
+
             route('transcriptions') => [
                 'icon' => 'headphones',
                 'title' => __('Transcriptions')

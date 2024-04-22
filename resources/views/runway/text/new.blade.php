@@ -2,12 +2,12 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
-    ['url' => route('images.midjorney'), 'title' => __('Images')],
-    ['title' => __('Midjorney')],
+    ['url' => route('runway.text'), 'title' => __('Runway')],
+    ['title' => __('Generate by text')],
     ['title' => __('New')],
 ]])
 
-<h1 class="h2 mb-0 d-inline-block">{{__('Midjorney')}} {{ __('New image') }}</h1>
+<h1 class="h2 mb-0 d-inline-block">{{__('Runway')}} {{ __('Generate by text') }}</h1>
 
 <div class="row mx-n2">
     <div class="col-12 col-lg-5 px-2">
@@ -22,7 +22,7 @@
             <div class="card-body">
                 @include('shared.message')
 
-                <form action="{{ route('images.midjorney.new') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('runway.text.new') }}" method="post" enctype="multipart/form-data">
                     @csrf
 
                     <div class="form-group">
@@ -46,8 +46,6 @@
                         @endif
                         <small class="form-text text-muted">{{ __('The description of the image.') }}</small>
                     </div>
-
-
                     @include('templates.partials.required-inputs')
                     @include('templates.partials.common-inputs')
 
@@ -62,9 +60,7 @@
                         </div>
                         <div class="col-auto px-2">
                             <a href="{{ route('templates.freestyle') }}" class="btn btn-outline-secondary d-none {{ (__('lang_dir') == 'rtl' ? 'mr-auto' : 'ml-auto') }}">{{ __('Reset') }}</a>
-                            <button class="btn btn-outline-secondary {{ (__('lang_dir') == 'rtl' ? 'mr-auto' : 'ml-auto') }}" type="button" data-toggle="collapse" data-target="#collapse-form-advanced" aria-expanded="{{ $errors->has('language') || $errors->has('creativity') || $errors->has('variations') ? 'true' : 'false'}}" aria-controls="collapse-form-advanced">
-                                {{ __('Advanced') }}
-                            </button>
+
                         </div>
                     </div>
                 </form>
@@ -78,12 +74,10 @@
 
     <div class="col-12 col-lg-7 px-2">
         @if(isset($images))
-            <div class="mt-3" id="ai-results">
-                @foreach($images as $image)
-                    <div class="mt-3">
-                        @include('templates.partials.image-result', ['image' => $image])
-                    </div>
-                @endforeach
+            <div class="text-muted font-weight-medium z-1" id="ai-placeholder-text-start">
+                <div class="width-6 height-6 mt-5"></div>
+                <div class="my-3">{{ __('Generating the content, please wait.') }}</div>
+                <div class="width-6 height-6 mb-5"></div>
             </div>
         @endif
 

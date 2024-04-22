@@ -2,8 +2,8 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.davinci'), 'title' => __('Images')],
-    ['title' => __('Davinci')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('images.dalle'), 'title' => __('Images')],
+    ['title' => __('DALL-E')],
     ['title' => __('Image')],
 ]])
 
@@ -20,7 +20,7 @@
             <div class="col">
                 <a href="#" class="btn text-secondary d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@include('icons.more-horiz', ['class' => 'fill-current width-4 height-4'])&#8203;</a>
 
-                @include('images.davinci.partials.menu')
+                @include('images.dalle.partials.menu')
             </div>
         </div>
     </div>
@@ -43,7 +43,15 @@
                 </div>
             </div>
             <div class="card-body">
-                <img src="{{ $image->url }}" class="w-100">
+                @if($link!=null)
+                    <img src="{{ $link }}" class="w-100">
+                @else
+                    <div class="text-muted font-weight-medium z-1" id="ai-placeholder-text-start">
+                        <div class="width-6 height-6 mt-5"></div>
+                        <div class="my-3 text-center">{{ __('Generating the content, please wait.') }}</div>
+                        <div class="width-6 height-6 mb-5"></div>
+                    </div>
+                @endif
             </div>
             <div class="card-footer p-0">
                 <div class="row">
@@ -86,9 +94,6 @@
                                 @include('icons.aspect-ratio', ['class' => 'fill-current text-muted width-4 height-4'])
                             </span>
 
-                            <span class="text-truncate text-muted" data-tooltip="true" title="{{ __(config('images.resolutions')[$image->resolution] ?? 'None') }}">
-                                {{ config('images.resolutions')[$image->resolution] }}
-                            </span>
                         </div>
                     </div>
                     <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center">

@@ -98,6 +98,11 @@ ul ol {
   margin-bottom: 0;
 }
 
+dd {
+  margin-right: 0;
+  margin-bottom: 0.5rem;
+}
+
 b,
 strong {
   font-weight: bolder;

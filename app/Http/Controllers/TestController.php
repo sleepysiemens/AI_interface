@@ -10,34 +10,25 @@ class TestController extends Controller
 {
     public function index()
     {
-        if(!Cache::has('test1'))
-        {
-            $client = new Client();
+        $client = new Client();
 
-            $response = $client->request('POST', 'https://claude-3.p.rapidapi.com/messages', [
-                'body' => '{
-    "model": "claude-3-opus-20240229",
-    "max_tokens": 1024,
-    "messages": [
-        {
-            "role": "user",
-            "content": "' . trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', 'hello')) . '"
-        }
-    ]
+        $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/text', [
+            'body' => '{
+    "text_prompt": "masterpiece, cinematic, man smoking cigarette looking outside window, moving around",
+    "width": 1344,
+    "height": 768,
+    "motion": 5,
+    "seed": 0,
+    "upscale": true,
+    "interpolate": true
 }',
-                'headers' => [
-                    'X-RapidAPI-Host' => 'claude-3.p.rapidapi.com',
-                    'X-RapidAPI-Key' => config('settings.claude3_key'),
-                    'content-type' => 'application/json',
-                ],
-            ]);
-            Cache::put('test1', $response);
-        }
-        else
-        {
-            $response = Cache::get('test1');
-        }
+            'headers' => [
+                'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.runway_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
 
-        dd(($response->getBody()));
+        dd(json_decode($response->getBody())->uuid);
     }
 }

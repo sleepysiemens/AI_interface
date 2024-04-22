@@ -835,5 +835,12 @@
     "Generate engaging social media quotes, based on description.": "Создание привлекательных цитат в социальных сетях на основе описания.",
     "or": "или",
     "Register via Telegram": "Зарегистрироваться через Telegram",
-    "Neural networks": "Нейросети"
+    "Neural networks": "Нейросети",
+    "Generate by text": "Генерация по тексту",
+    "Generate by image": "Генерация по картинке",
+    "Generate by image and description": "Генерация по картинке и тексту",
+    "Extend video": "Продолжить видео",
+
+
+    "": ""
 }

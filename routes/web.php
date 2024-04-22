@@ -246,7 +246,7 @@ Route::post('/images/dall-e/new', 'DALLEController@store')->middleware('verified
 Route::post('/images/dall-e/{id}/edit', 'DALLEController@update')->middleware('verified');
 Route::post('/images/dall-e/{id}/destroy', 'DALLEController@destroy')->middleware('verified')->name('images.dalle.destroy');
 
-// Image routes DALL-E
+// Image routes Midjorney
 Route::get('/images/mj', 'MidjorneyController@index')->middleware('verified')->name('images.midjorney');
 Route::get('/images/mj/new', 'MidjorneyController@create')->middleware('verified')->name('images.midjorney.new');
 Route::get('/images/mj/{id}/edit', 'MidjorneyController@edit')->middleware('verified')->name('images.midjorney.edit');
@@ -308,6 +308,20 @@ Route::get('/transcriptions/{id}', 'TranscriptionController@show')->middleware('
 Route::post('/transcriptions/new', 'TranscriptionController@store')->middleware('verified');
 Route::post('/transcriptions/{id}/edit', 'TranscriptionController@update')->middleware('verified');
 Route::post('/transcriptions/{id}/destroy', 'TranscriptionController@destroy')->middleware('verified')->name('transcriptions.destroy');
+
+// Runway text routes
+Route::group(['prefix'=>'runway'], function (){
+    Route::group(['prefix'=>'text'], function (){
+        Route::get('/', 'RunwayTextController@index')->middleware('verified')->name('runway.text');
+        Route::get('/new', 'RunwayTextController@create')->middleware('verified')->name('runway.text.new');
+        Route::get('/{id}/edit', 'RunwayTextController@edit')->middleware('verified')->name('runway.text.edit');
+        Route::get('/{id}', 'RunwayTextController@show')->middleware('verified')->name('runway.text.show');
+        Route::post('/new', 'RunwayTextController@store')->middleware('verified')->name('runway.text.store');
+        Route::post('/{id}/edit', 'RunwayTextController@update')->middleware('verified');
+        Route::post('/{id}/destroy', 'RunwayTextController@destroy')->middleware('verified')->name('runway.text.destroy');
+    });
+
+});
 
 // Account routes
 Route::prefix('account')->middleware('verified')->group(function () {

@@ -20,7 +20,7 @@
             <div class="col">
                 <a href="#" class="btn text-secondary d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@include('icons.more-horiz', ['class' => 'fill-current width-4 height-4'])&#8203;</a>
 
-                @include('images.partials.menu')
+                @include('images.midjorney.partials.menu')
             </div>
         </div>
     </div>
