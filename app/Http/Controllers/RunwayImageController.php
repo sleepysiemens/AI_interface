@@ -82,14 +82,14 @@ class RunwayImageController extends Controller
 
             $result=json_decode($response->getBody());
             //dd($result);
-            if($result->status!='in queue')
+            if($result->status != 'in queue')
             {
-                $link['gif']=$result->gif_url;
-                $link['video']=$result->url;
+                $link['gif'] = $result->gif_url;
+                $link['video'] = $result->url;
 
-                $image->link=$result->gif_url;
-                $image->video_url=$result->url;
-                $image->status='done';
+                $image->link = $result->gif_url;
+                $image->video_url = $result->url;
+                $image->status = 'done';
                 $image->save();
             }
             else

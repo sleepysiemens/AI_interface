@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateTemplateRequest;
+use App\Models\DeepFake;
 use App\Models\Image;
+use App\Models\Runway;
 use App\Models\Template;
 use App\Traits\DeepFakeTrait;
 use Illuminate\Http\Request;
@@ -22,7 +24,7 @@ class DeepFakeController extends Controller
      */
     public function index(Request $request)
     {
-        $images = Image::where('user_id', $request->user()->id)->where('network','deepfake')->get();
+        $images = DeepFake::where('user_id', $request->user()->id)->get();
         return view('deepfake.container', ['view' => 'list', 'images' => $images]);
     }
 
@@ -52,6 +54,10 @@ class DeepFakeController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $image = DeepFake::where([['id', $id]])->firstOrFail();
+
+        return view('deepfake.container', ['view' => 'show', 'image' => $image,]);
+
     }
 
     /**
@@ -63,9 +69,11 @@ class DeepFakeController extends Controller
      */
     public function store(StoreImageRequest $request)
     {
-        dd(1);
-    }
+        $image = $this->imagesStore($request);
 
+        //return view('runway.text.container', ['view' => 'new', 'image' => $image, 'name' => $request->input('name'), 'description' => $request->input('description')]);
+        return redirect()->route('deepfake.show', $image);
+    }
     /**
      * Update the Image.
      *

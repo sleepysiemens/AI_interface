@@ -141,23 +141,6 @@ class GetResponse
         // Append the user's input
         $messages[] = ['role' => 'user', 'content' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('message')))];
 
-        /*
-        $api_key=config('settings.gpt-3_openai_key');
-
-        switch ($chat->model)
-        {
-            case 'gpt-3.5-turbo':
-                $api_key=config('settings.gpt-3_openai_key');
-                break;
-            case 'gpt-3.5-turbo-16k':
-                $api_key=config('settings.gpt-3_16k_openai_key');
-                break;
-            case 'gpt-4':
-                $api_key=config('settings.gpt-4_openai_key');
-                break;
-        }
-*/
-
         $client = new Client();
 
         $response = $client->request('POST', 'https://claude-3.p.rapidapi.com/messages', [
@@ -290,44 +273,37 @@ class GetResponse
 
     public function DeepFakeResponse($request)
     {
-        $httpClient = new Client();
+        $client = new Client();
 
-        $response = $httpClient->request('POST', 'https://www.mymidjourney.ai/create/v2',
-            [
-                'proxy' => [
-                    'http' => getRequestProxy(),
-                    'https' => getRequestProxy()
-                ],
-                'timeout' => config('settings.request_timeout') * 60,
-                'headers' => [
-                    'User-Agent' => config('settings.request_user_agent'),
-                    'X-RapidAPI-Key' => config('settings.deepfake_key'),
-                    'X-RapidAPI-Host' => 'deepfake-face-swap.p.rapidapi.com',
-                    'content-type'=> 'application/json',
-                ],
-                'data' => [
-                    'source'=> 'https://upload.wikimedia.org/wikipedia/commons/2/26/Scarlett_Johansson_by_Gage_Skidmore_2019.jpg',
-                    'target'=> 'https://www.businessmole.com/wp-content/uploads/2023/08/Amber-Heard.jpeg'
-                ]
-            ]
-        );
+        $response = $client->request('POST', 'https://deepfake-face-swap.p.rapidapi.com/swap', [
+            'body' => '{
+                            "source": "'.$request->source.'",
+                            "target": "'.$request->target.'"
+                        }',
+            'headers' => [
+                'X-RapidAPI-Host' => 'deepfake-face-swap.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.deepfake_key'),
+                'content-type' => 'application/json',
+            ],
+        ]);
 
-        return $response;
+        return json_decode($response->getBody())->result;
     }
 
     public function RunwayTextResponse($request)
     {
+        $resolution=explode('x',$request->input('resolution_'));
         $client = new Client();
 
         $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/text', [
             'body' => '{
     "text_prompt": "'.$request->description.'",
-    "width": 1344,
-    "height": 768,
-    "motion": 5,
-    "seed": 0,
-    "upscale": true,
-    "interpolate": true
+    "width": '.$resolution[0].',
+    "height": '.$resolution[1].',
+    "motion": '.$request->motion.',
+    "seed": '.$request->speed.',
+    "upscale": '.$request->upscale.',
+    "interpolate": '.$request->interpolate.'
 }',
             'headers' => [
                 'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
@@ -346,10 +322,10 @@ class GetResponse
         $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/image', [
             'body' => '{
     "img_prompt": "'.$request->source.'",
-    "motion": 5,
-    "seed": 0,
-    "upscale": true,
-    "interpolate": true
+    "motion": '.$request->motion.',
+    "seed": '.$request->speed.',
+    "upscale": '.$request->upscale.',
+    "interpolate": '.$request->interpolate.'
 }',
             'headers' => [
                 'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
@@ -369,10 +345,10 @@ class GetResponse
             'body' => '{
     "img_prompt": "'.$request->source.'",
     "text_prompt": "'.$request->description.'",
-    "motion": 5,
-    "seed": 0,
-    "upscale": true,
-    "interpolate": true
+    "motion": '.$request->motion.',
+    "seed": '.$request->speed.',
+    "upscale": '.$request->upscale.',
+    "interpolate": '.$request->interpolate.'
 }',
             'headers' => [
                 'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',

@@ -2,77 +2,102 @@
 
 namespace App\Traits;
 
-use App\Models\Transcription;
+use App\Models\DeepFake;
 use App\Services\GetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait DeepFakeTrait
 {
-    public $getResponse;
-    public function __construct(GetResponse  $getResponse)
-    {
-        $this->getResponse=$getResponse;
-    }
     /**
-     * Store the Transcription.
+     * Store the Image.
      *
      * @param Request $request
-     * @return Transcription
+     * @param string|null $prompt
+     * @param int $variations
+     * @return array
+     * @throws GuzzleException
      */
-    protected function transcriptionStore(Request $request)
+    protected function imagesStore(Request $request)
     {
-        $transcription = new Transcription;
-        // Store the temporary file
-        $fileName = $request->file('file')->hashName();
-        $request->file('file')->move(public_path('uploads/users/transcriptions'), $fileName);
+        $response = $this->fetchImages($request);
 
-        $result = json_decode($this->getResponse->TranscriptionResponse($request, $fileName)->getBody()->getContents(), true);
+        return $this->imageModel($request, $response, 0);
+    }
 
-        $wordsCount = wordsCount($result['text']);
+    /**
+     * Store the Image.
+     *
+     * @param Request $request
+     * @param string|null $prompt
+     * @param int $variations
+     * @return DeepFake
+     * @throws GuzzleException
+     */
+    protected function imageStore(Request $request, string $prompt = null)
+    {
+        $response = $this->fetchImages($request);
 
-        $transcription->name = $request->input('name');
-        $transcription->user_id = $request->user()->id;
-        $transcription->result = trim($result['text']);
-        $transcription->words = $wordsCount;
-        $transcription->save();
+        return $this->imageModel($request, $response, 0);
+    }
 
-        $request->user()->transcriptions_month_count += 1;
-        $request->user()->transcriptions_total_count += 1;
-        $request->user()->words_month_count += $wordsCount;
-        $request->user()->words_total_count += $wordsCount;
+    /**
+     * @param Request $request
+     * @param $result
+     * @param $count
+     * @return DeepFake
+     * @throws GuzzleException
+     */
+    private function imageModel(Request $request, $result, $count)
+    {
+        $image = new DeepFake;
+        $image->name = $request->input('name'). ($count > 1 ? ' (' . $count .')' : '');
+        $image->user_id = $request->user()->id;
+        $image->result = $result;
+        $image->save();
+        $request->user()->images_month_count += 1;
+        $request->user()->images_total_count += 1;
         $request->user()->save();
 
-        // Remove the temporary file
-        unlink(public_path('uploads/users/transcriptions/' . $fileName));
+        $imageData = base64_decode($result);
+        $imageName = $request->input('name') . '.png';
+        $path = public_path('uploads/users/images'.$request->user()->id) . $imageName;
+        file_put_contents($path, $imageData);
 
-        return $transcription;
+
+        return $image;
     }
 
     /**
-     * Update the Transcription.
+     * Update the Image.
      *
      * @param Request $request
-     * @param Transcription $transcription
-     * @return Transcription
+     * @param DeepFake $image
+     * @return DeepFake
      */
-    protected function transcriptionUpdate(Request $request, Transcription $transcription)
+    protected function imageUpdate(Request $request, DeepFake $image)
     {
         if ($request->has('name')) {
-            $transcription->name = $request->input('name');
+            $image->name = $request->input('name');
         }
 
-        if ($request->has('favorite')) {
-            $transcription->favorite = $request->input('favorite');
-        }
+        $image->save();
 
-        if ($request->has('result')) {
-            $transcription->result = $request->input('result');
-        }
+        return $image;
+    }
 
-        $transcription->save();
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws GuzzleException
+     */
+    private function fetchImages(Request $request)
+    {
+        $response = $this->getResponse->DeepFakeResponse($request);
 
-        return $transcription;
+        return $response;
     }
 }

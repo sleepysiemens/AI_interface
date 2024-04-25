@@ -93,7 +93,7 @@ class MidjorneyController extends Controller
             return back()->with('error', __('An unexpected error has occurred, please try again.') . $e->getMessage())->withInput();
         }
 
-        return view('images.midjorney.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description')]);
+        //return view('images.midjorney.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description')]);
     }
 
     /**

@@ -65,7 +65,7 @@
                         ],
                     route('runway.image_description') => [
                         'icon' => 'runway',
-                        'title' => __('Generate by image and description')
+                            'title' => __('Generate by image and description')
                         ],
                     ],
                 ],
@@ -94,7 +94,7 @@
             @if (isset($value['menu']))
                 <div class="collapse sub-menu @if (array_filter(array_keys($menu[$key]['menu']), function ($url) { return str_starts_with(request()->url(), $url); })) show @endif" id="sub-menu-{{ $key }}">
                     @foreach ($value['menu'] as $subKey => $subValue)
-                        <a href="{{ $subKey }}" class="nav-link px-4 d-flex text-truncate @if (str_starts_with(request()->url(), $subKey)) active @endif">
+                        <a href="{{ $subKey }}" class="nav-link px-4 d-flex text-truncate @if (request()->url()== $subKey) active @endif">
                             <span class="sidebar-icon d-flex align-items-center">@include('icons.' . $subValue['icon'], ['class' => 'fill-current width-4 height-4 '.(__('lang_dir') == 'rtl' ? 'ml-3' : 'mr-3')])</span>
                             <span class="flex-grow-1 text-truncate">{{ $subValue['title'] }}</span>
                         </a>

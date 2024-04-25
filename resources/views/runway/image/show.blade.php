@@ -69,3 +69,13 @@
         </div>
     </div>
 </div>
+
+@section('script')
+    @if($image->status != 'done')
+        <script>
+            setTimeout(() => {
+                window.location.reload(1);
+            },30000);
+        </script>
+    @endif
+@endsection

@@ -50,16 +50,57 @@
 
                     <input type="hidden" name="description" value="1">
 
-                    {{--<div class="form-group">
-                        <label for="i-description">{{ __('Description') }}</label>
-                        <textarea dir="ltr" rows="5" name="description" id="i-description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="{{ __('Blue butterfly') }}">{{ $description ?? (old('description') ?? '') }}</textarea>
-                        @if ($errors->has('description'))
+                    <div class="form-group">
+                        <label for="i-motion">{{ __('Motion') }}</label>
+                        <input type="number" name="motion" id="i-motion" class="form-control{{ $errors->has('motion') ? ' is-invalid' : '' }}" value="{{ $motion ?? (old('motion') ?? '5') }}">
+                        @if ($errors->has('motion'))
                             <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('description') }}</strong>
+                                <strong>{{ $errors->first('motion') }}</strong>
                             </span>
                         @endif
-                        <small class="form-text text-muted">{{ __('The description of the image.') }}</small>
-                    </div>--}}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="i-motion">{{ __('Speed') }}</label>
+                        <input type="number" name="speed" id="i-motion" class="form-control{{ $errors->has('motion') ? ' is-invalid' : '' }}" value="{{ $speed ?? (old('speed') ?? '0') }}">
+                        @if ($errors->has('speed'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('speed') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="i-upscale">{{ __('use upscale') }}</label>
+                        <select  name="upscale" id="i-upscale" class="custom-select{{$errors->has('upscale') ? ' is-invalid' : ''}} ">
+                            @foreach([true, false] as $key)
+                                <option value="{{ $key }}">{{ $key ? __('yes') : __('no') }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('upscale'))
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('upscale') }}</strong>
+                                </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="i-interpolate">{{ __('use interpolate') }}</label>
+                        <select  name="interpolate" id="i-interpolate" class="custom-select{{$errors->has('interpolate') ? ' is-invalid' : ''}} ">
+                            @foreach([true, false] as $key)
+                                <option value="{{ $key }}">{{ $key ? __('yes') : __('no') }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($errors->has('interpolate'))
+                            <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('interpolate') }}</strong>
+                                </span>
+                        @endif
+                    </div>
+
+
                     @include('templates.partials.required-inputs')
                     @include('templates.partials.common-inputs')
 

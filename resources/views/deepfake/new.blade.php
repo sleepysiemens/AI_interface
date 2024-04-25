@@ -1,4 +1,4 @@
-@section('site_title', formatTitle([__('New'), __('Transcription'), config('settings.title')]))
+@section('site_title', formatTitle([__('New'), __('DeepFake'), config('settings.title')]))
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => route('dashboard'), 'title' => __('Home')],
@@ -36,31 +36,25 @@
             </div>
 
             <div class="form-group">
-                <label for="i-file">{{ __('Source') }}</label>
-                <div class="custom-file">
-                    <input type="file" name="source" id="i-file" class="custom-file-input{{ $errors->has('file') ? ' is-invalid' : '' }}">
-                    <label class="custom-file-label" for="i-file" data-browse="{{ __('Browse') }}">{{ __('Choose file') }}</label>
-                </div>
-                @if ($errors->has('file'))
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $errors->first('file') }}</strong>
-                    </span>
+                <label for="i-source">{{ __('Source') }}</label>
+                <input type="text" name="source" id="i-source" class="form-control{{ $errors->has('source') ? ' is-invalid' : '' }}" value="{{ $source ?? (old('source') ?? '') }}">
+                @if ($errors->has('source'))
+                    <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('source') }}</strong>
+                            </span>
                 @endif
-                <small class="form-text text-muted">{{ __('Image.') }}</small>
+                <small class="form-text text-muted">{{ __('The link to the image.') }}</small>
             </div>
 
             <div class="form-group">
-                <label for="i-file">{{ __('Target') }}</label>
-                <div class="custom-file">
-                    <input type="file" name="target" id="i-file-2" class="custom-file-input{{ $errors->has('file') ? ' is-invalid' : '' }}">
-                    <label class="custom-file-label" for="i-file-2" data-browse="{{ __('Browse') }}">{{ __('Choose file') }}</label>
-                </div>
-                @if ($errors->has('file'))
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $errors->first('file') }}</strong>
-                    </span>
+                <label for="i-target">{{ __('Target') }}</label>
+                <input type="text" name="target" id="i-target" class="form-control{{ $errors->has('target') ? ' is-invalid' : '' }}" value="{{ $target ?? (old('target') ?? '') }}">
+                @if ($errors->has('target'))
+                    <span class="invalid-feedback" role="alert">
+                                <strong>{{ $errors->first('target') }}</strong>
+                            </span>
                 @endif
-                <small class="form-text text-muted">{{ __('Image.') }}</small>
+                <small class="form-text text-muted">{{ __('The link to the image.') }}</small>
             </div>
 
             <div class="form-group">
@@ -73,6 +67,8 @@
                 @endif
                 <small class="form-text text-muted">{{ __('The description of the audio file.') }}</small>
             </div>
+            @include('templates.partials.required-inputs')
+            @include('templates.partials.common-inputs')
 
 
             <button type="submit" name="submit" class="btn btn-primary">{{ __('Save') }}</button>

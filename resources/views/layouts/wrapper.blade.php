@@ -33,3 +33,4 @@
 </head>
 @yield('body')
 </html>
+@yield('script')

@@ -1,8 +1,8 @@
-@section('site_title', formatTitle([__('Edit'), __('Transcription'), config('settings.title')]))
+@section('site_title', formatTitle([__('Edit'), __('DeepFake'), config('settings.title')]))
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.transcriptions') : route('transcriptions'), 'title' => __('Transcriptions')],
+    ['url' => request()->is('admin/*') ? route('admin.transcriptions') : route('deepfake'), 'title' => __('DeepFake')],
     ['title' => __('Edit')],
 ]])
 

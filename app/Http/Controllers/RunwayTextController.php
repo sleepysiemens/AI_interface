@@ -71,8 +71,7 @@ class RunwayTextController extends Controller
     {
         $image = Runway::where([['id', $id]])->firstOrFail();
         $client = new Client();
-        #if($image->status=='new')
-        #{
+
             $response = $client->request('GET', 'https://runwayml.p.rapidapi.com/status?uuid='.$image->task_uuid, [
                 'headers' => [
                     'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
@@ -89,17 +88,12 @@ class RunwayTextController extends Controller
 
                 $image->link=$result->gif_url;
                 $image->video_url=$result->url;
-                $image->status='done';
+                $image->status = 'done';
                 $image->save();
             }
             else
                 $link=null;
-        #}
-        #else
-        #{
-        #    $link['gif']=$image->link;
-        #    $link['video']=$image->video_url;
-        #}
+
 
         return view('runway.text.container', ['view' => 'show', 'image' => $image, 'link' => $link]);
     }
