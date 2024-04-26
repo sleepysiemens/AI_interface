@@ -225,6 +225,7 @@ class GetResponse
                     'Authorization' => 'Bearer ' . config('settings.gpt-3_openai_key'),
                 ],
                 'json' => [
+                    'model' => 'dall-e-3',
                     'prompt' => trim(preg_replace('/(?:\s{2,}+|[^\S ])/ui', ' ', $request->input('description'))) . ($request->input('style') ? '. ' . __('The image should have :style style.', ['style' => $request->input('style')]) : '') . ($request->input('medium') ? '. ' . __('The image should be on a :medium medium.', ['medium' => $request->input('medium')]) : '') . ($request->input('filter') ? '. ' . __('Apply :filter filter.', ['filter' => $request->input('filter')]) : ''),
                     'n' => $request->has('variations') ? (float) $request->input('variations') : 1,
                     'size' => $request->input('resolution'),
