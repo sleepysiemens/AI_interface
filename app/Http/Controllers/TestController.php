@@ -12,23 +12,15 @@ class TestController extends Controller
     {
         $client = new Client();
 
-        $response = $client->request('POST', 'https://runwayml.p.rapidapi.com/generate/text', [
-            'body' => '{
-    "text_prompt": "masterpiece, cinematic, man smoking cigarette looking outside window, moving around",
-    "width": 1344,
-    "height": 768,
-    "motion": 5,
-    "seed": 0,
-    "upscale": true,
-    "interpolate": true
-}',
+        $response = $client->request('POST', 'https://midjourney11.p.rapidapi.com/imagine', [
+            'body' => '{"prompt": "long brown dachshund"}',
             'headers' => [
-                'X-RapidAPI-Host' => 'runwayml.p.rapidapi.com',
-                'X-RapidAPI-Key' => config('settings.runway_key'),
+                'X-RapidAPI-Host' => 'midjourney11.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.midjorney_key'),
                 'content-type' => 'application/json',
             ],
         ]);
 
-        dd(json_decode($response->getBody())->uuid);
+        dd(json_decode($response->getBody()));
     }
 }

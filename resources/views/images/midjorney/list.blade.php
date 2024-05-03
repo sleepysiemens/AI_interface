@@ -151,10 +151,6 @@
                                 </div>
 
                                 <div class="d-none d-md-block col-md-3 col-lg-2 text-truncate">
-                                    {{ __('Resolution') }}
-                                </div>
-
-                                <div class="d-none d-md-block col-md-3 col-lg-2 text-truncate">
                                     {{ __('Created at') }}
                                 </div>
                             </div>
@@ -188,10 +184,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div class="d-none d-md-flex align-items-center col-md-3 col-lg-2 text-truncate">
-                                        {{ config('images.resolutions')[$image->resolution] }}
                                     </div>
 
                                     <div class="d-none d-md-flex col-md-3 col-lg-2 text-truncate">

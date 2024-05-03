@@ -13,14 +13,14 @@
     <div class="d-flex align-items-center flex-grow-0">
         <div class="form-row flex-nowrap">
             <div class="col">
-                <a href="{{ $image->url }}" class="btn d-flex align-items-center" download="{{ $image->name }}" data-tooltip="true" title="{{ __('Download') }}">
+                <a href="@if($link!=null){{ $link['video'] }}@endif" class="btn d-flex align-items-center" target="_blank" data-tooltip="true" title="{{ __('Download') }}">
                     @include('icons.export', ['class' => 'fill-current width-4 height-4 text-secondary'])&#8203;
                 </a>
             </div>
             <div class="col">
                 <a href="#" class="btn text-secondary d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@include('icons.more-horiz', ['class' => 'fill-current width-4 height-4'])&#8203;</a>
 
-                @include('images.midjorney.partials.menu')
+                @include('runway.text.partials.menu')
             </div>
         </div>
     </div>
@@ -35,7 +35,6 @@
                         <div class="d-flex align-items-center font-weight-medium py-1">
                             <div class="d-flex align-items-center text-truncate">
                                 {{ __('Image') }}
-
                                 @if($image->favorite) <div class="d-flex flex-shrink-0 width-4 height-4 text-warning {{ (__('lang_dir') == 'rtl' ? 'mr-2' : 'ml-2') }}" data-tooltip="true" title="{{ __('Favorite') }}">@include('icons.star', ['class' => 'fill-current width-4 height-4 flex-shrink-0'])</div> @endif
                             </div>
                         </div>
@@ -43,54 +42,18 @@
                 </div>
             </div>
             <div class="card-body">
-                <img src="{{ $image->url }}" class="w-100">
+                @if($link!=null)
+                    <img src="{{ $link['gif'] }}" class="w-100">
+                @else
+                    <div class="text-muted font-weight-medium z-1" id="ai-placeholder-text-start">
+                        <div class="width-6 height-6 mt-5"></div>
+                        <div class="my-3 text-center">{{ __('Generating the content, please wait.') }}</div>
+                        <div class="width-6 height-6 mb-5"></div>
+                    </div>
+                @endif
             </div>
             <div class="card-footer p-0">
                 <div class="row">
-                    <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center border-bottom border-bottom-lg-0 {{ (__('lang_dir') == 'rtl' ? 'border-left-md' : 'border-right-md') }}">
-                        <div class="card-body my-n2 text-truncate d-flex align-items-center justify-content-lg-center">
-                            <span class="height-6 d-flex align-items-center {{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}" data-tooltip="true" title="{{ __('Style') }}">
-                                @include('icons.style', ['class' => 'fill-current text-muted width-4 height-4'])
-                            </span>
-
-                            <span class="text-truncate text-muted" data-tooltip="true" title="{{ __(config('images.styles')[$image->style] ?? 'None') }}">
-                                {{ __(config('images.styles')[$image->style] ?? 'None') }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center border-bottom border-bottom-lg-0 {{ (__('lang_dir') == 'rtl' ? 'border-left-md' : 'border-right-md') }}">
-                        <div class="card-body my-n2 text-truncate d-flex align-items-center justify-content-lg-center">
-                            <span class="height-6 d-flex align-items-center {{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}" data-tooltip="true" title="{{ __('Medium') }}">
-                                @include('icons.palette', ['class' => 'fill-current text-muted width-4 height-4'])
-                            </span>
-
-                            <span class="text-truncate text-muted" data-tooltip="true" title="{{ __(config('images.mediums')[$image->medium] ?? 'None') }}">
-                                {{ __(config('images.mediums')[$image->medium] ?? 'None') }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center border-bottom border-bottom-lg-0 {{ (__('lang_dir') == 'rtl' ? 'border-left-md' : 'border-right-md') }}">
-                        <div class="card-body my-n2 text-truncate d-flex align-items-center justify-content-lg-center">
-                            <span class="height-6 d-flex align-items-center {{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}" data-tooltip="true" title="{{ __('Filter') }}">
-                                @include('icons.tonality', ['class' => 'fill-current text-muted width-4 height-4 ' . (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2')])
-                            </span>
-
-                            <span class="text-truncate text-muted" data-tooltip="true" title="{{ __(config('images.filters')[$image->filter] ?? 'None') }}">
-                                {{ __(config('images.filters')[$image->filter] ?? 'None') }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center border-bottom border-bottom-lg-0 {{ (__('lang_dir') == 'rtl' ? 'border-left-md' : 'border-right-md') }}">
-                        <div class="card-body my-n2 text-truncate d-flex align-items-center justify-content-lg-center">
-                            <span class="height-6 d-flex align-items-center {{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}" data-tooltip="true" title="{{ __('Resolution') }}">
-                                @include('icons.aspect-ratio', ['class' => 'fill-current text-muted width-4 height-4'])
-                            </span>
-
-                            <span class="text-truncate text-muted" data-tooltip="true" title="{{ __(config('images.resolutions')[$image->resolution] ?? 'None') }}">
-                                {{ config('images.resolutions')[$image->resolution] }}
-                            </span>
-                        </div>
-                    </div>
                     <div class="col-12 col-lg text-truncate d-flex align-items-center justify-content-lg-center">
                         <div class="card-body my-n2 text-truncate d-flex align-items-center justify-content-lg-center">
                             <span class="height-6 d-flex align-items-center {{ (__('lang_dir') == 'rtl' ? 'ml-2' : 'mr-2') }}" data-tooltip="true" title="{{ __('Created at') }}">
@@ -107,3 +70,13 @@
         </div>
     </div>
 </div>
+
+@section('script')
+    @if($image->status != 'done')
+        <script>
+            setTimeout(() => {
+                window.location.reload(1);
+            },30000);
+        </script>
+    @endif
+@endsection

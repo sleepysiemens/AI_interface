@@ -257,19 +257,18 @@ class GetResponse
 
     public function MidjorneyImageResponse($request)
     {
-        $task_id=$this->get_midjorney_task_id($request->input('description'));
-
-
         $client = new Client();
-        $progress=0;
 
-        $response = $client->request('GET', 'https://midjourney11.p.rapidapi.com/task/?taskId='.$task_id, [
+        $response = $client->request('POST', 'https://midjourney11.p.rapidapi.com/imagine', [
+            'body' => '{"prompt": "'.$request->description.'"}',
             'headers' => [
                 'X-RapidAPI-Host' => 'midjourney11.p.rapidapi.com',
                 'X-RapidAPI-Key' => config('settings.midjorney_key'),
+                'content-type' => 'application/json',
             ],
         ]);
-        return $response;
+
+        return json_decode($response->getBody())->taskId;
     }
 
     public function DeepFakeResponse($request)

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Image;
+use App\Models\Midjorney;
 use App\Models\MidjorneyRequest;
 use App\Services\GetResponse;
 use GuzzleHttp\Client;
@@ -25,20 +26,7 @@ trait MidjorneyImageTrait
     {
         $response = $this->fetchImages($request);
 
-        /*$results = [];
-        $i = 1;
-        foreach ($response['data'] as $result) {
-            if ($request->user()->can('create', ['App\Models\MidjorneyRequest'])) {
-                $results[] = $this->imageModel($request, $result, $i);
-                $i++;
-            }
-        }
-
-        return $results;*/
-
-        MidjorneyRequest::create(['user_id'=>auth()->user()->id, 'taskId'=>$response]);
-
-        return $response;
+        return $this->imageModel($request, $response, 0);
     }
 
     /**
@@ -66,29 +54,11 @@ trait MidjorneyImageTrait
      */
     private function imageModel(Request $request, $result, $count)
     {
-        $fileName = Str::uuid();
-
-        $httpClient = new Client();
-
-        $httpClient->request('GET', $count == 0 ? $result['data'][0]['url'] : $result['url'], [
-            'sink' => public_path('uploads/users/images/' . $fileName)
-        ]);
-
-        $imageResource = imagecreatefrompng(public_path('uploads/users/images/' . $fileName));
-
-        $imageFileName = $fileName . '.jpg';
-
-        // Convert and optimize the image
-        imagejpeg($imageResource, public_path('uploads/users/images/' . $imageFileName), 88);
-
-        // Remove the original image
-        unlink(public_path('uploads/users/images/' . $fileName));
-
-        $image = new Image;
+        $image = new Midjorney;
         $image->name = $request->input('name'). ($count > 1 ? ' (' . $count .')' : '');
         $image->user_id = $request->user()->id;
-        $image->result = $imageFileName;
-        $image->network = 'midjorney';
+        $image->status = 'new';
+        $image->task_uuid = $result;
         $image->save();
 
         $request->user()->images_month_count += 1;
@@ -111,10 +81,6 @@ trait MidjorneyImageTrait
             $image->name = $request->input('name');
         }
 
-        if ($request->has('favorite')) {
-            $image->favorite = $request->input('favorite');
-        }
-
         $image->save();
 
         return $image;
@@ -125,17 +91,10 @@ trait MidjorneyImageTrait
      * @return mixed
      * @throws GuzzleException
      */
-    private function getTaskId(Request $request)
-    {
-        $response=$this->getResponse->get_midjorney_task_id($request->description);
-
-       return $response;
-    }
-
     private function fetchImages(Request $request)
     {
-        $response=$this->getResponse->MidjorneyImageResponse($request);
+        $response = $this->getResponse->MidjorneyImageResponse($request);
 
-        return json_decode($response->getBody()->getContents(), true);
+        return $response;
     }
 }

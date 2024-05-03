@@ -6,8 +6,10 @@ use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateTemplateRequest;
 use App\Models\Image;
+use App\Models\Midjorney;
 use App\Models\Template;
 use App\Traits\MidjorneyImageTrait;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class MidjorneyController extends Controller
@@ -29,13 +31,13 @@ class MidjorneyController extends Controller
         $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'desc';
         $perPage = in_array($request->input('per_page'), [10, 25, 50, 100]) ? $request->input('per_page') : config('settings.paginate');
 
-        $images = Image::where('user_id', $request->user()->id)->where('network','=','midjorney')
-            ->when(isset($favorite) && is_numeric($favorite), function ($query) use ($favorite) {
-                return $query->ofFavorite($favorite);
+        $images = Midjorney::where('user_id', $request->user()->id)#->where('type','text')
+            ->when($search, function ($query) use ($search, $searchBy) {
+                return $query->searchName($search);
             })
             ->orderBy($sortBy, $sort)
             ->paginate($perPage)
-            ->appends(['search' => $search, 'favorite' => $favorite, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
+            ->appends(['search' => $search, 'search_by' => $searchBy, 'sort_by' => $sortBy, 'sort' => $sort, 'per_page' => $perPage]);
 
         return view('images.midjorney.container', ['view' => 'list', 'images' => $images]);
     }
@@ -59,7 +61,7 @@ class MidjorneyController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $image = Image::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
+        $image = Midjorney::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
         return view('images.midjorney.container', ['view' => 'edit', 'image' => $image]);
     }
@@ -69,13 +71,32 @@ class MidjorneyController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $image = Image::where([['id', $id]])->firstOrFail();
+        $image = Midjorney::where([['id', $id]])->firstOrFail();
+        $client = new Client();
 
-        if (!$request->user() || $request->user()->id != $image->user_id && $request->user()->role == 0) {
-            abort(403);
+        $response = $client->request('GET', 'https://midjourney11.p.rapidapi.com/task/?taskId='.$image->task_uuid, [
+            'headers' => [
+                'X-RapidAPI-Host' => 'midjourney11.p.rapidapi.com',
+                'X-RapidAPI-Key' => config('settings.midjorney_key'),
+            ],
+        ]);
+
+        $result=json_decode($response->getBody());
+        //dd($result);
+        if($result->progress != 0)
+        {
+            $link = $result->imageUrl;
+
+            $image->link = $link;
+            $image->status = 'done';
+            $image->save();
         }
+        else
+            $link = null;
 
-        return view('images.midjorney.container', ['view' => 'show', 'image' => $image]);
+
+        return view('images.midjorney.container', ['view' => 'show', 'image' => $image, 'link' => $link]);
+
     }
 
     /**
@@ -87,13 +108,9 @@ class MidjorneyController extends Controller
      */
     public function store(StoreImageRequest $request)
     {
-        try {
-            $images = $this->imagesStore($request);
-        } catch (\Exception $e) {
-            return back()->with('error', __('An unexpected error has occurred, please try again.') . $e->getMessage())->withInput();
-        }
+        $image = $this->imagesStore($request);
 
-        //return view('images.midjorney.container', ['view' => 'new', 'images' => $images, 'name' => $request->input('name'), 'description' => $request->input('description')]);
+        return redirect()->route('runway.text.show', $image);
     }
 
     /**
@@ -105,7 +122,7 @@ class MidjorneyController extends Controller
      */
     public function update(UpdateImageRequest $request, $id)
     {
-        $image = Image::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
+        $image = Midjorney::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
         $this->imageUpdate($request, $image);
 
@@ -121,7 +138,7 @@ class MidjorneyController extends Controller
      */
     public function processShow(UpdateTemplateRequest $request, $id)
     {
-        $template = Template::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
+        $template = Midjorney::where([['id', '=', $id], ['user_id', '=', $request->user()->id]])->firstOrFail();
 
         $this->templateUpdate($request, $template);
 
