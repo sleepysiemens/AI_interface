@@ -110,7 +110,7 @@ class MidjorneyController extends Controller
     {
         $image = $this->imagesStore($request);
 
-        return redirect()->route('runway.text.show', $image);
+        return redirect()->route('images.midjorney.show', $image);
     }
 
     /**
