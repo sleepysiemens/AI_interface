@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('runway.text'), 'title' => __('Runway')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('stabdiff.image'), 'title' => __('Stabdiff')],
     ['title' => __('Generate by text')],
     ['title' => __('Edit')],
 ]])
@@ -15,12 +15,12 @@
     <div class="card-header align-items-center">
         <div class="row">
             <div class="col">
-                <div class="font-weight-medium py-1">{{__('DALL-E')}} {{ __('Image') }}</div>
+                <div class="font-weight-medium py-1">{{__('Stabdiff')}} {{ __('Image') }}</div>
             </div>
             <div class="col-auto">
                 <div class="form-row">
                     <div class="col">
-                        @include('images.dalle.partials.menu')
+                        @include('images.stabdiff.image.menu')
                     </div>
                 </div>
             </div>

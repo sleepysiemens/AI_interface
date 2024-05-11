@@ -2,7 +2,7 @@
 
 @include('shared.breadcrumbs', ['breadcrumbs' => [
     ['url' => request()->is('admin/*') ? route('admin.dashboard') : route('dashboard'), 'title' => request()->is('admin/*') ? __('Admin') : __('Home')],
-    ['url' => request()->is('admin/*') ? route('admin.images') : route('runway.text'), 'title' => __('Runway')],
+    ['url' => request()->is('admin/*') ? route('admin.images') : route('stabdiff.text'), 'title' => __('StabDiff')],
     ['title' => __('Generate by text')],
     ['title' => __('Edit')],
 ]])

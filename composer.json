@@ -24,7 +24,8 @@
         "mews/purifier": "^3.3",
         "protonemedia/laravel-verify-new-email": "^1.1",
         "razorpay/razorpay": "^2.8",
-        "stripe/stripe-php": "^7.83"
+        "stripe/stripe-php": "^7.83",
+        "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

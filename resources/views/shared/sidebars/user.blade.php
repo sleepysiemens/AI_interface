@@ -70,6 +70,21 @@
                     ],
                 ],
 
+                'StabDiff' => [
+                    'icon' => 'stabdiff',
+                    'title' => __('StabDiff'),
+                    'menu' => [
+                        route('stabdiff.text') => [
+                        'icon' => 'stabdiff',
+                        'title' => __('Generate by text')
+                        ],
+                        route('stabdiff.image') => [
+                        'icon' => 'stabdiff',
+                        'title' => __('Generate by image')
+                        ],
+                    ],
+                ],
+
             route('transcriptions') => [
                 'icon' => 'headphones',
                 'title' => __('Transcriptions')

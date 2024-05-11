@@ -347,6 +347,32 @@ Route::group(['prefix'=>'runway'], function (){
 
 });
 
+//Stab Diff routes
+Route::group(['prefix'=>'stabdiff'], function (){
+
+    // Stab Diff text routes
+    Route::group(['prefix'=>'text'], function (){
+        Route::get('/', 'StabDiffTextController@index')->middleware('verified')->name('stabdiff.text');
+        Route::get('/new', 'StabDiffTextController@create')->middleware('verified')->name('stabdiff.text.new');
+        Route::get('/{id}/edit', 'StabDiffTextController@edit')->middleware('verified')->name('stabdiff.text.edit');
+        Route::get('/{id}', 'StabDiffTextController@show')->middleware('verified')->name('stabdiff.text.show');
+        Route::post('/new', 'StabDiffTextController@store')->middleware('verified')->name('stabdiff.text.store');
+        Route::post('/{id}/edit', 'StabDiffTextController@update')->middleware('verified');
+        Route::post('/{id}/destroy', 'StabDiffTextController@destroy')->middleware('verified')->name('stabdiff.text.destroy');
+    });
+
+    // Stab Diff image routes
+    Route::group(['prefix'=>'image'], function (){
+        Route::get('/', 'StabDiffImageController@index')->middleware('verified')->name('stabdiff.image');
+        Route::get('/new', 'StabDiffImageController@create')->middleware('verified')->name('stabdiff.image.new');
+        Route::get('/{id}/edit', 'StabDiffImageController@edit')->middleware('verified')->name('stabdiff.image.edit');
+        Route::get('/{id}', 'StabDiffImageController@show')->middleware('verified')->name('stabdiff.image.show');
+        Route::post('/new', 'StabDiffImageController@store')->middleware('verified')->name('stabdiff.image.store');
+        Route::post('/{id}/edit', 'StabDiffImageController@update')->middleware('verified');
+        Route::post('/{id}/destroy', 'StabDiffImageController@destroy')->middleware('verified')->name('stabdiff.image.destroy');
+    });
+});
+
 // Account routes
 Route::prefix('account')->middleware('verified')->group(function () {
     Route::get('/', 'AccountController@index')->name('account');

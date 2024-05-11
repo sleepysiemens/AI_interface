@@ -359,4 +359,75 @@ class GetResponse
 
         return json_decode($response->getBody())->uuid;
     }
+
+    public function StabDiffTextResponse($request)
+    {
+        $payload = [
+            "key" => config('settings.stabdiff_key'),
+            "prompt" => $request['description'],
+            "guidance_scale" => 20,
+            "steps" => 31,
+            "frame_size" => 256,
+            "output_type" => "gif",
+            "webhook" => null,
+            "track_id" => null
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://modelslab.com/api/v3/txt_to_3d',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return json_decode($response);
+    }
+
+    public function StabDiffImageResponse($request)
+    {
+        $payload = [
+            "key" => config('settings.stabdiff_key'),
+            "image" => $request['source'],
+            "guidance_scale" => 5,
+            "steps" => 31,
+            "frame_size" => 128,
+            "webhook" => null,
+            "track_id" => null
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://modelslab.com/api/v3/img_to_3d',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+    }
 }
